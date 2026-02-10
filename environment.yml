@@ -1,0 +1,12 @@
+name: cocoaboard
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - jupyter=1.1
+  - pandas=2.2
+  - numpy=2.0
+  - shiny=0.5
+  - altair=5.3
+  - vegafusion=0.4
