@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # Project Proposal for Chocolate Sales Dashboard
 
 ## Section 1: Motivation and Purpose
