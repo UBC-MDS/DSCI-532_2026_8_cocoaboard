@@ -25,12 +25,12 @@ Interactive charts reveal trends over time, highlight top and underperforming se
 The Chocolate Sales dataset contains 6 columns and provides transactional-level sales data across multiple dimensions.
 
 Columns:
-Salesperson - The name of the salesperson responsible for the sale.
-Country - The country where the sale was made.
-Product - The name and type of the product sold.
-Date - The date when the sale transaction occurred (DD/MM/YYYY format).
-Amount - The total sales amount for the transaction, expressed in US dollars.
-Boxes Shipped- The number of product boxes shipped as part of the transaction.
+- Salesperson - The name of the salesperson responsible for the sale.
+- Country - The country where the sale was made.
+- Product - The name and type of the product sold.
+- Date - The date when the sale transaction occurred (DD/MM/YYYY format).
+- Amount - The total sales amount for the transaction, expressed in US dollars.
+- Boxes Shipped- The number of product boxes shipped as part of the transaction.
 
 ### Relevance
 Performance Tracking Variables:
