@@ -45,3 +45,45 @@ Country - Reveals regional performance disparities, will provide insighta for re
 
 Temporal Insights:
 Date - Enables trend analysis to detect seasonality and growth patterns, which is essential for weekly, monthly, quarterly or annual sales strategy. The nature of the DD/MM/YYYY format allows for aggregation by day, month, quarter, or year.
+
+## Section 3: Research Questions & Usage Scenarios
+
+### Usage Scenario
+Vinay is a Regional Sales Director at a chocolate company and he wants to understand what drives sales performance across regions, products, and his team in order to allocate resources and set targets. He wants to be able to [explore] transactional sales data in order to [compare] performance by country, product, and sales person and [identify] top performers, seasonal trends, and underperforming areas.
+
+When Vinay logs on to our CocoaBoard app, he will see an overview of key metrics—total sales (~$19.79M in the dataset), year-over-year growth (+54.3%), and breakdowns by Country, Product, and Sales Person. He can filter by date range, country, or product to compare regions and individuals, and explore which products and salespeople drive the most revenue. When he does so, Vinay may e.g. notice that Australia is the top-performing country and Mallorie Waber is the top sales person, and that premium dark chocolate variants such as "50% Dark Bites" lead in sales.
+
+Based on his findings from using our app, Vinay can set regional targets, reward top performers, rebalance product mix in weaker regions, and plan seasonal campaigns using the same dashboard for ongoing monitoring.
+
+### User Stories
+*You can choose to frame your detailed requirements as User Stories...*
+
+**User Story 1:**
+As a **Sales Manager**, I want to **filter sales by country and date range** in order to **compare regional performance and spot trends over time**.
+
+**User Story 2:**
+As a **Regional Sales Director**, I want to **compare revenue and boxes shipped by product (e.g., 50% Dark Bites, Smooth Silky Caramel)** in order to **identify best-selling products and adjust inventory or promotions**.
+
+**User Story 3:**
+As a **Sales Manager**, I want to **see rankings of sales people by total sales and by country** in order to **evaluate individual contribution and allocate territories or incentives**.
+
+**User Story 4:**
+As a **C-suite executive**, I want to **view high-level sales trends and YoY growth** in order to **track company performance and support strategic decisions**.
+
+### Jobs to Be Done
+
+**JTBD 1:**
+**Situation:** When I am reviewing monthly or quarterly sales reports...
+**Motivation:** ...I want to see total sales, growth, and breakdowns by country and product...
+**Outcome:** ...so I can align targets and resource allocation with actual performance.
+
+**JTBD 2:**
+**Situation:** When evaluating my sales team...
+**Motivation:** ...I want to compare sales people by revenue and boxes shipped, and by region...
+**Outcome:** ...so I can recognize top performers and support those in underperforming regions.
+
+**JTBD 3:**
+**Situation:** When planning product mix and promotions...
+**Motivation:** ...I want to see which products sell best in which countries and over time...
+**Outcome:** ...so I can prioritize premium lines (e.g., dark chocolate) and seasonal campaigns.
+

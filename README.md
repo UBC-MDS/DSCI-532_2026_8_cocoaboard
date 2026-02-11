@@ -13,8 +13,8 @@ The dashboard uses the **Chocolate Sales** dataset from Kaggle:
 1. **Clone the repository** (if you haven’t already):
 
    ```bash
-   git clone <repository-url>
-   cd cocoaboard
+   git clone https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard
+   cd DSCI-532_2026_8_cocoaboard
    ```
 
 2. **Create and activate the conda environment:**
