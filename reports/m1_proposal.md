@@ -145,3 +145,7 @@ lines (e.g., dark chocolate) and seasonal campaigns.
 ## Section 5: App Sketch & Description
 
 ![Dashboard sketch](img/Dahsboard_sketch.png)
+
+The dashboard features a comprehensive landing page displaying key sales metrics and visualizations for chocolate sales analysis. At the top, an interactive filters panel allows users to filter data by date range, country, and product through dropdown menus. Below the filters, there are 3 KPI cards displaying the Total Revenue, Total Boxes Shipped, and Active Sales Representatives within the date range, each showing year-over-year percentage changes for comparison. 
+
+The main visualization is a line chart "Revenue Over Time" tracking sales trends within a date range, accompanied by two ranking tables: "Top 5 Products" showing product performance by revenue and number of transactions, and "Top 5 Countries" displaying geographic sales leaders by revenue. At the bottom, a detailed "Salesperson Performance Leaderboard" table presents individual sales representative metrics including rank, name, total revenue, and number of transactions, enabling users to compare team performance at a glance and identify top performers across multiple dimensions. The performance leader board is interactive as the user is able to filter by sales rep by clicking the name of the sales rep in the table.
