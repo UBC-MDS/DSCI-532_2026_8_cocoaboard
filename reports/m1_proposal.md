@@ -7,17 +7,17 @@
 Our target audience will be primarity Sales Managers, Regional Sales Directors or C-suites at a chocolate manufacturing/distribution company. Our team will serve as Data Analytics Consultants for the sales team providing actionable insights to help the leadership team optimize their sales strategy and resource allocation.
 
 ### Problem
-
 Here are the challengs facing by the chocolate company:
 
-- Inconsistent sales performance across regions and salespeople 
-- Inefficient product mix decisions 
-- Reactive rather than proactive management - Monthly or quarterly reviews happen too late to course-correct, and they need real-time visibility into trends
-- Missed opportunities - They can't easily identify seasonal patterns, top customers, or which salesperson-product combinations work best
+- Inconsistent sales performance across regions and salespeople: need to build performance tracker for sales strategy and human resource training 
+- Inefficient product mix decisions: need to discover the top product sales for efficient recource allocation
+- Reactive rather than proactive management: Monthly or quarterly reviews happen too late to course-correct, and they need real-time visibility into trends
+- Missed opportunities: need to identify seasonal patterns, top customers, or which salesperson-product combinations work best
 
 ### Solution
+Our interactive R Shiny dashboard will serve as a centralized, web-based command center accessible from any browser. Through intuitive dropdown filters, date selectors, and dynamic visualizations, sales managers can instantly compare performance across salespeople, products, and countries without technical expertise. 
 
-Creating machine learning models often involves writing redundant code, particularly when tuning hyperparameters and comparing performance across different models. This project aims to reduce that redundancy by streamlining these repetitive steps, making the model development process more efficient and time-effective. To achieve this, our project focuses on building reusable functions that, given user input, automatically return the optimal hyperparameters, the best-performing model, its accuracy score, and a corresponding confusion matrix, all in a single, unified workflow.
+Interactive charts reveal trends over time, highlight top and underperforming segments, and calculate profit margins on-the-fly. Users can drill down from high-level overviews to granular transaction details, answer ad-hoc questions independently, and even generate personalized performance views for individual sales reps. This self-service analytics tool transforms static data into actionable intelligence, enabling the team to shift from reactive quarterly reviews to proactive, data-driven decision-making in real-time.
 
 ## Section 2: Description of the Data
 
@@ -34,27 +34,14 @@ Boxes Shipped- The number of product boxes shipped as part of the transaction.
 
 ### Relevance
 Performance Tracking Variables:
-Salesperson - Enables comparison of individual sales performance, identifying top performers and those needing support or training.
-Boxes and Amount - Provide volume and revenue metrics to measure success and set benchmarks
+Salesperson - Enables comparison of individual sales person performance, identifying top performers and those needing additional support or training
+Amount - Provides direct revenue to measure sales success and a source to set benchmarks across regions
 
-Profitability Analysis:
-Cost per box - Combined with Amount, allows calculation of profit margins and identification of high-value products
-Product - Links performance to specific items, revealing which products drive profitability versus just volume
+Product Analysis:
+Product - Links performance to specific chocolate types, revealing which items is the main sales driver and which may need promotional support or discontinuation
 
 Geographic Intelligence:
-
-Country - Reveals regional performance disparities, helping allocate resources to high-potential markets and identify underperforming territories
+Country - Reveals regional performance disparities, will provide insighta for resource allocation based on high-potential markets and identify underperforming territories that need attention
 
 Temporal Insights:
-
-Date - Enables trend analysis to detect seasonality, growth patterns, and timing of successful campaigns
-
-Strategic Combinations:
-The real power lies in cross-referencing these variables:
-
-Salesperson × Product = Which reps excel at selling premium items?
-Country × Date = Are there regional seasonal patterns?
-Product × Boxes × Amount = Which products have the best revenue-per-box ratio?
-Salesperson × Country = Should we reassign territories based on performance?
-
-This multidimensional dataset provides all the necessary inputs to transform the sales team's reactive approach into a proactive, data-driven strategy.
+Date - Enables trend analysis to detect seasonality and growth patterns, which is essential for weekly, monthly, quarterly or annual sales strategy. The nature of the DD/MM/YYYY format allows for aggregation by day, month, quarter, or year.
