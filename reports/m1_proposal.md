@@ -150,4 +150,4 @@ lines (e.g., dark chocolate) and seasonal campaigns.
 
 ## Section 5: App Sketch & Description
 
-![Dashboard sketch](images/dashboard_sketch-01.png)
+![Dashboard sketch](img/Dahsboard_sketch.png)
