@@ -106,8 +106,6 @@ monitoring.
 
 ### User Stories
 
-*You can choose to frame your detailed requirements as User Stories...*
-
 **User Story 1:** As a **Sales Manager**, I want to **filter sales by
 country and date range** in order to **compare regional performance and
 spot trends over time**.
