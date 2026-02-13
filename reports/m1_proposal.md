@@ -140,6 +140,31 @@ performers and support those in underperforming regions.
 countries and over time... **Outcome:** ...so I can prioritize premium
 lines (e.g., dark chocolate) and seasonal campaigns.
 
+## Section 4: Exploratory Data Analysis
+
+### Selected User Story
+
+**User Story 2:** As a **Regional Sales Director**, I want to **compare revenue and boxes shipped by product (e.g., 50% Dark Bites, Smooth Silky Caramel)** in order to **identify best-selling products and adjust inventory or promotions**.
+
+### Visualizations
+
+The full analysis can be found in the EDA notebook: [`notebooks/eda_analysis.ipynb`](../notebooks/eda_analysis.ipynb).
+
+**Visualization 1 — Total Revenue by Product (Bar Chart):**
+
+As we can see, the top 3 products are "Smooth Sliky Salty", "50% Dark Bites" and "White Choc". These products consistently generate the highest revenue, indicating strong market demand and customer preference.
+
+**Visualization 2 — Revenue vs. Boxes Shipped (Scatter Plot):**
+
+The plot reveals that there's a positive correlation between both variables. This suggests that products with higher sales revenue also tend to have a higher volume of boxes shipped, which makes sense, they have more demmand.
+
+
+
+### How This Supports Decision-Making
+
+This comparison helps the director make informed decisions about inventory allocation, promotional strategies, and potential product discontinuation. For instance, products with high revenue and high boxes shipped are strong performers that might warrant increased inventory and continued promotional support. Conversely, products with low revenue but high boxes shipped could indicate pricing issues or low-profit margins, prompting a review of their pricing strategy or even discontinuation.
+
+
 ## Section 5: App Sketch & Description
 
 ![Dashboard sketch](img/Dahsboard_sketch.png)
