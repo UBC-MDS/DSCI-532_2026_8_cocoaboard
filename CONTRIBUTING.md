@@ -14,6 +14,14 @@ Thanks for your interest in contributing. Here’s how to get set up and submit 
    ```bash
    shiny run src/app.py
    ```
+   For development with auto-reload on file changes, use:
+   ```bash
+   shiny run src/app.py --reload
+   ```
+   Optionally open the app in your browser automatically:
+   ```bash
+   shiny run src/app.py --reload --launch-browser
+   ```
 
 ## How to contribute
 
