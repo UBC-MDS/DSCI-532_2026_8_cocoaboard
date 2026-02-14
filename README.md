@@ -24,13 +24,19 @@ The dashboard uses the **Chocolate Sales** dataset from Kaggle:
    conda activate cocoaboard
    ```
 
-<!-- 3. **Run the dashboard:**
+3. **Run the dashboard:**
 
    ```bash
-   python src/app.py
+   shiny run src/app.py
    ```
 
-   Then open the URL shown in the terminal (typically `http://127.0.0.1:8050/`) in your browser. -->
+   Then open the URL shown in the terminal (typically `http://127.0.0.1:8000/`) in your browser.
+
+   For development with auto-reload on file changes:
+
+   ```bash
+   shiny run src/app.py --reload
+   ```
 
 ## Contributors
 
