@@ -1,6 +1,18 @@
 from shiny import App, ui, render
 import pandas as pd
-import altair as alt
+
+from theme import get_head_content
+from filters import filters_ui
+from value_boxes import value_boxes_ui
+from revenue_chart import revenue_chart_ui, build_chart
+from tables import (
+    top_products_ui,
+    top_countries_ui,
+    leaderboard_ui,
+    get_top_products_df,
+    get_top_countries_df,
+    get_leaderboard_df,
+)
 
 # -- Load data ----------------------------------------------------------------
 df = pd.read_csv("data/raw/Chocolate_Sales.csv")
@@ -9,93 +21,40 @@ df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
 
 countries = sorted(df["Country"].unique().tolist())
 products = sorted(df["Product"].unique().tolist())
+date_min = str(df["Date"].min().date())
+date_max = str(df["Date"].max().date())
 
 # -- UI -----------------------------------------------------------------------
 app_ui = ui.page_fillable(
-    ui.h2("CocoaBoard – Chocolate Sales Dashboard"),
-
-    # Filters row
+    get_head_content(),
+    ui.h2("CocoaBoard - Chocolate Sales Dashboard"),
+    filters_ui(countries, products, date_min, date_max),
+    value_boxes_ui(),
+    revenue_chart_ui(),
     ui.layout_columns(
-        ui.card(
-            ui.card_header("Filters"),
-            ui.input_date_range(
-                "date_range", "Date Range",
-                start=str(df["Date"].min().date()),
-                end=str(df["Date"].max().date()),
-            ),
-            ui.input_selectize(
-                "country", "Country",
-                choices=["All"] + countries,
-                selected="All",
-            ),
-            ui.input_selectize(
-                "product", "Product",
-                choices=["All"] + products,
-                selected="All",
-            ),
-        ),
-        col_widths=(12,),
-    ),
-
-    # KPI cards row
-    ui.layout_columns(
-        ui.value_box(
-            "Total Revenue",
-            ui.output_text("total_revenue"),
-            showcase=ui.HTML("💰"),
-        ),
-        ui.value_box(
-            "Total Boxes Shipped",
-            ui.output_text("total_boxes"),
-            showcase=ui.HTML("📦"),
-        ),
-        ui.value_box(
-            "Active Sales Reps",
-            ui.output_text("active_reps"),
-            showcase=ui.HTML("👤"),
-        ),
-        col_widths=(4, 4, 4),
-    ),
-
-    # Revenue Over Time chart
-    ui.layout_columns(
-        ui.card(
-            ui.card_header("Revenue Over Time"),
-            ui.output_ui("revenue_chart"),
-        ),
-        col_widths=(12,),
-    ),
-
-    # Bottom row: Top Products, Top Countries, Salesperson Leaderboard
-    ui.layout_columns(
-        ui.card(
-            ui.card_header("Top 5 Products"),
-            ui.output_table("top_products"),
-        ),
-        ui.card(
-            ui.card_header("Top 5 Countries"),
-            ui.output_table("top_countries"),
-        ),
+        top_products_ui(),
+        top_countries_ui(),
         col_widths=(6, 6),
+        fill=False,
+        fillable=False,
     ),
-
     ui.layout_columns(
-        ui.card(
-            ui.card_header("Salesperson Performance Leaderboard"),
-            ui.output_table("leaderboard"),
-        ),
+        leaderboard_ui(),
         col_widths=(12,),
+        fill=False,
+        fillable=False,
     ),
 )
 
 
 # -- Server --------------------------------------------------------------------
 def server(input, output, session):
-
     def filtered_data():
         data = df.copy()
         start, end = input.date_range()
-        data = data[(data["Date"] >= pd.Timestamp(start)) & (data["Date"] <= pd.Timestamp(end))]
+        data = data[
+            (data["Date"] >= pd.Timestamp(start)) & (data["Date"] <= pd.Timestamp(end))
+        ]
         if input.country() != "All":
             data = data[data["Country"] == input.country()]
         if input.product() != "All":
@@ -126,52 +85,19 @@ def server(input, output, session):
             .sum()
             .reset_index()
         )
-        chart = (
-            alt.Chart(monthly)
-            .mark_line(point=True)
-            .encode(
-                x=alt.X("Month:T", title="Date"),
-                y=alt.Y("Amount:Q", title="Revenue (USD)"),
-                tooltip=["Month:T", "Amount:Q"],
-            )
-            .properties(width="container", height=300)
-        )
-        return ui.HTML(chart.to_html())
+        return build_chart(monthly)
 
     @render.table
     def top_products():
-        data = filtered_data()
-        return (
-            data.groupby("Product")
-            .agg(Revenue=("Amount", "sum"), Transactions=("Amount", "count"))
-            .sort_values("Revenue", ascending=False)
-            .head(5)
-            .reset_index()
-        )
+        return get_top_products_df(filtered_data())
 
     @render.table
     def top_countries():
-        data = filtered_data()
-        return (
-            data.groupby("Country")
-            .agg(Revenue=("Amount", "sum"), Transactions=("Amount", "count"))
-            .sort_values("Revenue", ascending=False)
-            .head(5)
-            .reset_index()
-        )
+        return get_top_countries_df(filtered_data())
 
     @render.table
     def leaderboard():
-        data = filtered_data()
-        return (
-            data.groupby("Sales Person")
-            .agg(Revenue=("Amount", "sum"), Transactions=("Amount", "count"))
-            .sort_values("Revenue", ascending=False)
-            .reset_index()
-            .rename(columns={"Sales Person": "Salesperson"})
-            .assign(Rank=lambda x: range(1, len(x) + 1))
-            [["Rank", "Salesperson", "Revenue", "Transactions"]]
-        )
+        return get_leaderboard_df(filtered_data())
 
 
 app = App(app_ui, server)
