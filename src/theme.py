@@ -27,6 +27,10 @@ h1, h2, h3, h4, .card-header {
   border: 1px solid var(--chocolate-light) !important;
   border-radius: 10px !important;
   box-shadow: 0 2px 8px rgba(45, 24, 16, 0.08) !important;
+  overflow: visible !important;
+}
+.bslib-card .card-body, .card .card-body {
+  overflow: visible !important;
 }
 .bslib-card-header, .card-header {
   background: linear-gradient(180deg, var(--cream-dark) 0%, var(--cream) 100%) !important;
@@ -71,9 +75,10 @@ h1, h2, h3, h4, .card-header {
   height: auto !important;
   min-height: 2.25rem !important;
 }
-/* Layout: columns and rows size to content, no stretch */
+/* Layout: columns and rows size to content, no stretch; allow dropdowns to overflow */
 .bslib-grid, .bslib-fill-container, [class*="layout-columns"] {
   align-items: start !important;
+  overflow: visible !important;
 }
 .bslib-grid > *, .bslib-fill-container > * {
   height: auto !important;
