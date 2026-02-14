@@ -1,1 +1,1 @@
-a 2-3 sentence blurb about your dashboard
+CocoaBoard is an interactive dashboard for sales managers and leadership to explore global chocolate sales. It supports comparison of performance by country, product, and sales person, with key metrics and trends so teams can set targets, reward top performers, and adjust product mix. Built with Shiny for Python and the Chocolate Sales dataset from Kaggle.
