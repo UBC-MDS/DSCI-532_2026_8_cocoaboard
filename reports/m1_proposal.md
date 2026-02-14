@@ -167,7 +167,7 @@ This comparison helps the director make informed decisions about inventory alloc
 
 ## Section 5: App Sketch & Description
 
-![Dashboard sketch](img/Dahsboard_sketch.png)
+![Dashboard sketch](../img/sketch.png)
 
 The dashboard features a comprehensive landing page displaying key sales metrics and visualizations for chocolate sales analysis. At the top, an interactive filters panel allows users to filter data by date range, country, and product through dropdown menus. Below the filters, there are 3 KPI cards displaying the Total Revenue, Total Boxes Shipped, and Active Sales Representatives within the date range, each showing year-over-year percentage changes for comparison. 
 
