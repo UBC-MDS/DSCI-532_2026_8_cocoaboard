@@ -1,9 +1,9 @@
 from shiny import App, ui, render
 import pandas as pd
 
-from theme import get_head_content
-from filters import filters_ui
-from value_boxes import value_boxes_ui
+from .theme import get_head_content
+from .filters import filters_ui
+from .value_boxes import value_boxes_ui
 
 # -- Load data ----------------------------------------------------------------
 df = pd.read_csv("data/raw/Chocolate_Sales.csv")
