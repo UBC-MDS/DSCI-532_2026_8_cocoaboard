@@ -24,6 +24,14 @@ The dashboard uses the **Chocolate Sales** dataset from Kaggle:
    conda activate cocoaboard
    ```
 
+   To generate a `requirements.txt` from this environment for posit cloud connect
+
+   ```bash
+   python scripts/generate_requirements.py
+   ```
+
+   Or in one shot: `conda run -n cocoaboard pip freeze --local > requirements.txt`
+
 3. **Run the dashboard:**
 
    ```bash
