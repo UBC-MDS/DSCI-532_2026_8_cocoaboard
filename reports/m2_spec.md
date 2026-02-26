@@ -34,3 +34,13 @@ flowchart TD
   F --> O4([plot_revenue_time])
   F --> O5([plot_top_products])
 ```
+### 2.4 Calculation Details
+
+**`filtered_df`**
+- **Depends on:** `input_date_range`, `input_country`, `input_product`
+- **Transformation:** Filters the raw Chocolate_Sales dataframe to rows within
+  the selected date range. If a specific country is selected (not "All"), further
+  filters to that country. If a specific product is selected (not "All"), further
+  filters to that product. Returns the cleaned, filtered dataframe.
+- **Consumed by:** `total_revenue`, `total_boxes`, `active_reps`,
+  `plot_revenue_time`, `plot_top_products`
