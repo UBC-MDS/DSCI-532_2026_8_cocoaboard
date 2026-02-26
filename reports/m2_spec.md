@@ -5,6 +5,6 @@ Review your M1 job stories in light of your deployment setup and any new insight
 
 | #   | Job Story                       | Status         | Notes                         |
 | --- | ------------------------------- | -------------- | ----------------------------- |
-| 1   | When I … I want to … so I can … | ✅ Implemented |                               |
-| 2   | When I filter date and country I want to check the ranking of active sales representatives including their revenue and boxes shipped so I can evaluate individual contribution for training and resource allocation purpose.| 🔄 Revised     | Changed from X to Y because … |
-| 3   | When I … I want to … so I can … | ⏳ Pending M3  |                               |
+| 1   | When I am reviewing monthly or quarterly sales reports, I want to see total sales and breakdowns by country and product, so I can align targets and resource allocation with actual performance. | ✅ Implemented |Filters (date range, country, product) + KPI value boxes are live |
+| 2   | When I am planning product mix and promotions, I want to see which products sell best over time and by country, so I can prioritize premium lines and seasonal campaigns.| 🔄 Revised | Changed from X to Y because … |
+| 3   | When I am evaluating my sales team, I want to compare salespeople by revenue and boxes shipped by region, so I can recognize top performers and support those in underperforming areas. | ⏳ Pending M3  | Salesperson leaderboard table planned for M3 |
