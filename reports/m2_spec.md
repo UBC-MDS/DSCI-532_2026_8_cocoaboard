@@ -1,8 +1,6 @@
 
 ### 2.1 Updated Job Stories
 
-Review your M1 job stories in light of your deployment setup and any new insights. Update or add stories as needed, and track their status:
-
 | #   | Job Story                       | Status         | Notes                         |
 | --- | ------------------------------- | -------------- | ----------------------------- |
 | 1   | When I am reviewing monthly or quarterly sales reports, I want to see total sales and breakdowns by country and product, so I can align targets and resource allocation with actual performance. | ✅ Implemented |Filters (date range, country, product) + KPI value boxes are live |
@@ -10,8 +8,6 @@ Review your M1 job stories in light of your deployment setup and any new insight
 | 3   | When I am evaluating my sales team, I want to compare salespeople by revenue and boxes shipped by region, so I can recognize top performers and support those in underperforming areas. | ⏳ Pending M3  | Salesperson leaderboard table planned for M3 |
 
 ### 2.2 Component Inventory
-
-Plan every input, reactive calc, and output your app will have. Use this as a checklist during Phase 3. Minimum 2 components per team member (6 for a 3-person team, 8 for a 4-person team), with at least 2 inputs and 2 outputs:
 
 | ID                  | Type          | Shiny widget / renderer      | Depends on                                           | Job story  |
 | ------------------- | ------------- | ---------------------------- | ---------------------------------------------------- | ---------- |
@@ -24,3 +20,17 @@ Plan every input, reactive calc, and output your app will have. Use this as a ch
 | `active_reps`       | Output        | `@render.text`               | `filtered_df`                                        | #2         |
 | `plot_revenue_time` | Output        | `@render.altair`             | `filtered_df`                                        | #3         |
 | `plot_top_products` | Output        | `@render.altair`             | `filtered_df`                                        | #3         |
+
+### 2.3 Reactivity Diagram
+
+```mermaid
+flowchart TD
+  A[/input_date_range/] --> F{{filtered_df}}
+  B[/input_country/] --> F
+  C[/input_product/] --> F
+  F --> O1([total_revenue])
+  F --> O2([total_boxes])
+  F --> O3([active_reps])
+  F --> O4([plot_revenue_time])
+  F --> O5([plot_top_products])
+```
