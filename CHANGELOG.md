@@ -13,6 +13,7 @@
 - Two deployments on Posit Connect Cloud: stable (`main`) and preview (`dev`)
 
 ### Changed
+- Changed the way packages are getting imported because it was breaking on posit cloud connect
 - `filtered_data()` converted from a plain function to `@reactive.calc` for proper reactive dependency tracking
 - YoY % change in value boxes deferred to M3 due to complexity; Revenue Over Time chart planned for M3 instead
 - Salesperson leaderboard scope expanded from M1 sketch to include transactions and boxes shipped columns
