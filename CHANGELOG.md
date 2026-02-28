@@ -24,9 +24,9 @@
 - Revenue Over Time line chart not yet implemented (planned for M3)
 - Map does not support multi-country selection; only one country can be filtered at a time
 
-### Project Tracker
+### Reflection
 - **Job Story 1** (KPI overview): ✅ Fully implemented — value boxes and filters are live
-- **Job Story 2** (salesperson leaderboard): ✅ Fully implemented — leaderboard table with rank, revenue, and boxes shipped
-- **Job Story 3** (product mix over time): ⏳ Pending M3 — Revenue Over Time chart deferred
-- **Job Story 4** (all metrics update on filter): ✅ Fully implemented — all outputs share a single `@reactive.calc`
-- The final layout closely follows the M1 sketch. The main deviation is the absence of the Revenue Over Time line chart, which was replaced temporarily by the leaderboard in M2 and will be added in M3.
+- **Job Story 2** (filter reactivity): ✅ Fully implemented — all outputs share a single `@reactive.calc` and update simultaneously
+- **Job Story 3** (choropleth map): ✅ Fully implemented — world map colored by country revenue responds to product and date filters
+- **Job Story 4** (salesperson leaderboard): ✅ Fully implemented — leaderboard table with rank, revenue, transactions, and boxes shipped
+- All 4 job stories for M2 are fully implemented. The final layout closely follows the M1 sketch. The main deviation is the absence of a Revenue Over Time line chart from the original proposal, which is deferred to M3.
