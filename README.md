@@ -15,8 +15,8 @@ CocoaBoard helps sales managers and regional directors answer key questions at a
 
 ## Deployed App
 
-- **Stable (main):** []()
-- **Development preview:** []() 
+- **Stable (main):** [https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud)
+- **Development preview:** [https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud)
 
 ## Dataset
 
@@ -54,11 +54,6 @@ The dashboard uses the **Chocolate Sales** dataset from Kaggle:
    ```bash
    shiny run src/app.py --reload
    ```
-
-## Deployment
-
-- **Production (main):** [https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud)
-- **Development:** [https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud)
 
 ## Contributors
 
