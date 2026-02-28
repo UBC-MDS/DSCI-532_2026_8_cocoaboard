@@ -39,6 +39,11 @@ The dashboard uses the **Chocolate Sales** dataset from Kaggle:
    shiny run src/app.py --reload
    ```
 
+## Deployment
+
+- **Production (main):** [https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud)
+- **Development:** [https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud)
+
 ## Contributors
 
 - [Daisy Zhou](https://github.com/daisyzhou-ubc)
