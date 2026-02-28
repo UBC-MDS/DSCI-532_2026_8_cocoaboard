@@ -42,6 +42,13 @@ app_ui = ui.page_fillable(
         leaderboard_ui(),
         col_widths=(7, 5),
     ),
+    # include a footer with app description, authors, repo link, and last updated date
+    ui.tags.footer(
+        "CocoaBoard | Created by Daisy Zhou, Vinay Valson, Eduardo Rivera | ",
+        ui.tags.a("GitHub Repo", href="https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard", target="_blank"),
+        " | Last updated: February 2026",
+        style="text-align: center; padding: 1rem; font-size: 0.85rem; color: #666;"
+    ),
 )
 
 
