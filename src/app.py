@@ -1,12 +1,29 @@
 from shiny import App, ui, render, reactive
 import pandas as pd
 import altair as alt
+from pathlib import Path
+import sys
 
-from theme import get_head_content
-from filters import filters_ui
-from value_boxes import value_boxes_ui
-from map_chart import map_chart_ui
-from leaderboard import leaderboard_ui
+# When run as a script (e.g. shiny run src/app.py), __package__ is unset;
+# add src to path so absolute imports work. When run as src.app (e.g. on
+# Connect), __package__ is "src" and we use relative imports.
+if not __package__ or __package__ == "__main__":
+    _src = Path(__file__).resolve().parent
+    if str(_src) not in sys.path:
+        sys.path.insert(0, str(_src))
+
+if __package__ and __package__ != "__main__":
+    from .theme import get_head_content
+    from .filters import filters_ui
+    from .value_boxes import value_boxes_ui
+    from .map_chart import map_chart_ui
+    from .leaderboard import leaderboard_ui
+else:
+    from theme import get_head_content
+    from filters import filters_ui
+    from value_boxes import value_boxes_ui
+    from map_chart import map_chart_ui
+    from leaderboard import leaderboard_ui
 
 # -- Constants ----------------------------------------------------------------
 _COUNTRY_CODES = {
