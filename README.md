@@ -15,8 +15,8 @@ CocoaBoard helps sales managers and regional directors answer key questions at a
 
 ## Deployed App
 
-- **Stable (main):** [https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-main.share.connect.posit.cloud)
-- **Development preview:** [https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud](https://vin-dictive-dsci-532-2026-8-cocoaboard-development.share.connect.posit.cloud)
+- **Stable (main):** []()
+- **Development preview:** []() 
 
 ## Dataset
 
