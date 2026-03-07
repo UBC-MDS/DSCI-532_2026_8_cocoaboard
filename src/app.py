@@ -9,12 +9,15 @@ import altair as alt
 from pathlib import Path
 import sys
 
+import os
 import querychat
 from chatlas import ChatAnthropic
 from dotenv import load_dotenv
 
 # Load environment variables (.env for local dev; env vars on Connect Cloud)
 load_dotenv()
+
+_ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 
 # When run as a script (e.g. shiny run src/app.py), __package__ is unset;
 # add src to path so absolute imports work. When run as src.app (e.g. on
@@ -61,16 +64,21 @@ date_min = str(df["Date"].min().date())
 date_max = str(df["Date"].max().date())
 
 # -- querychat setup ----------------------------------------------------------
-qc = querychat.QueryChat(
-    df.copy(),
-    "chocolate_sales",
-    greeting="""Ask me anything about CocoaBoard chocolate sales data.
+_chat_greeting = (
+    """**AI chat is disabled.** Set the `ANTHROPIC_API_KEY` environment variable to use this tab. Create a `.env` file in the project root with `ANTHROPIC_API_KEY=your_key_here` (see `.env.example`). Get a key at [Anthropic Console](https://console.anthropic.com/)."""
+    if not _ANTHROPIC_API_KEY
+    else """Ask me anything about CocoaBoard chocolate sales data.
 
 * <span class="suggestion">Show sales from Australia</span>
 * <span class="suggestion">Which sales rep has the highest revenue?</span>
 * <span class="suggestion">Filter to Mint Chip Choco products</span>
 * <span class="suggestion">Show top 10 transactions by amount</span>
-""",
+"""
+)
+qc = querychat.QueryChat(
+    df.copy(),
+    "chocolate_sales",
+    greeting=_chat_greeting,
     data_description="""
 Chocolate sales transaction data with the following columns:
 - Sales Person: name of the sales representative
@@ -80,7 +88,7 @@ Chocolate sales transaction data with the following columns:
 - Amount: sale amount in USD (float)
 - Boxes Shipped: number of boxes shipped (integer)
 """,
-    client=ChatAnthropic(model="claude-haiku-4-5"),
+    client=ChatAnthropic(model="claude-haiku-4-5", api_key=_ANTHROPIC_API_KEY or ""),
 )
 
 # -- Footer -------------------------------------------------------------------

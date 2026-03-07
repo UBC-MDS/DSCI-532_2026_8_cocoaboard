@@ -3,3 +3,5 @@
 .RData
 node_modules/
 .env
+# Allow .env.example (template for required env vars)
+!.env.example
