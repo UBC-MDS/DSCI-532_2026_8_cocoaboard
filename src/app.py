@@ -100,17 +100,21 @@ _footer = ui.tags.footer(
 
 # -- UI -----------------------------------------------------------------------
 app_ui = ui.page_navbar(
-    get_head_content(),
-
     # ── Tab 1: Traditional Dashboard ─────────────────────────────────────────
     ui.nav_panel(
         "Chocolate Sales Dashboard",
         ui.tags.div(
-            filters_ui(countries, products, date_min, date_max),
+            filters_ui(countries, products, "2024-08-01", "2024-08-31"), #set the default date range to 2025
             value_boxes_ui(),
             ui.layout_columns(
-                map_chart_ui(),
-                leaderboard_ui(),
+                ui.card(
+                    map_chart_ui(),
+                    style="height: 450px; overflow-y: auto;",
+                ),
+                ui.card(
+                    leaderboard_ui(),
+                    style="height: 450px; overflow-y: auto;",
+                ),
                 col_widths=(7, 5),
             ),
             _footer,
@@ -128,7 +132,7 @@ app_ui = ui.page_navbar(
                 ui.card(
                     ui.download_button(
                         "download_ai_data",
-                        "⬇️ Download Filtered Data",
+                        "Download Filtered Data",
                         class_="btn-sm",
                     ),
                     style="padding: 0.5rem;",
@@ -160,6 +164,7 @@ app_ui = ui.page_navbar(
     ),
 
     title="CocoaBoard",
+    header=get_head_content(),
     fillable=True,
 )
 
@@ -239,10 +244,11 @@ def server(input, output, session):
             srcdoc=chart.to_html(),
             style="width:100%;height:350px;border:none;",
         )
-
+    
     @render.data_frame
     def leaderboard_table():
         data = filtered_data()
+        total_revenue = data["Amount"].sum()
         leaderboard = (
             data.groupby("Sales Person")
             .agg(
@@ -255,6 +261,8 @@ def server(input, output, session):
             .reset_index(drop=True)
         )
         leaderboard.insert(0, "Rank", range(1, len(leaderboard) + 1))
+        leaderboard["Avg Deal"] = (leaderboard["Revenue"] / leaderboard["Transactions"]).apply(lambda x: f"${x:,.0f}")
+        leaderboard["Rev Share"] = (leaderboard["Revenue"] / total_revenue * 100).apply(lambda x: f"{x:.1f}%")
         leaderboard["Revenue"] = leaderboard["Revenue"].apply(lambda x: f"${x:,.0f}")
         leaderboard["Boxes"] = leaderboard["Boxes"].apply(lambda x: f"{x:,}")
         return leaderboard.rename(columns={"Sales Person": "Sales Rep"})
