@@ -78,10 +78,11 @@ def server(input, output, session):
         data = data[
             (data["Date"] >= pd.Timestamp(start)) & (data["Date"] <= pd.Timestamp(end))
         ]
-        if input.country() != "All":
-            data = data[data["Country"] == input.country()]
-        if input.product() != "All":
-            data = data[data["Product"] == input.product()]
+        # multi-select: empty tuple/None means "All"
+        if input.country():
+            data = data[data["Country"].isin(input.country())]
+        if input.product():
+            data = data[data["Product"].isin(input.product())]
         return data
 
     @render.text
