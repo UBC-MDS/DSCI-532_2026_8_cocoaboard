@@ -265,7 +265,19 @@ def server(input, output, session):
         leaderboard["Rev Share"] = (leaderboard["Revenue"] / total_revenue * 100).apply(lambda x: f"{x:.1f}%")
         leaderboard["Revenue"] = leaderboard["Revenue"].apply(lambda x: f"${x:,.0f}")
         leaderboard["Boxes"] = leaderboard["Boxes"].apply(lambda x: f"{x:,}")
-        return leaderboard.rename(columns={"Sales Person": "Sales Rep"})
+        leaderboard = leaderboard.rename(columns={"Sales Person": "Sales Rep"})
+
+        # Summary row with means/totals
+        summary = pd.DataFrame([{
+            "Rank": "",
+            "Sales Rep": "AVERAGE / TOTAL",
+            "Revenue": f"${total_revenue:,.0f}",
+            "Transactions": data.shape[0],
+            "Boxes": f"{data['Boxes Shipped'].sum():,}",
+            "Avg Deal": f"${data['Amount'].mean():,.0f}",
+            "Rev Share": "100.0%",
+        }])
+        return pd.concat([leaderboard, summary], ignore_index=True)
     
     # ── Tab 2: AI chat ────────────────────────────────────────────────────────
     qc_vals = qc.server()
