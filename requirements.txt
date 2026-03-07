@@ -2,7 +2,7 @@
 # Versions match environment.yml. For local dev, use: conda env create -f environment.yml
 # Do not use pip freeze from a conda env—it embeds local paths and breaks publishing.
 
-shiny>=1.13.0
+shiny>=1.5.1
 pandas==3.0.0
 altair==6.0.0
 querychat==0.5.1
