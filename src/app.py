@@ -49,7 +49,7 @@ date_min = str(df["Date"].min().date())
 date_max = str(df["Date"].max().date())
 
 # -- UI -----------------------------------------------------------------------
-app_ui = ui.page_fillable(
+app_ui = ui.page_fluid(
     get_head_content(),
     ui.h2("CocoaBoard - Chocolate Sales Dashboard"),
     filters_ui(countries, products, date_min, date_max),
@@ -59,12 +59,12 @@ app_ui = ui.page_fillable(
         leaderboard_ui(),
         col_widths=(7, 5),
     ),
-    # include a footer with app description, authors, repo link, and last updated date
+
     ui.tags.footer(
-        "CocoaBoard | Created by Daisy Zhou, Vinay Valson, Eduardo Rivera | ",
-        ui.tags.a("GitHub Repo", href="https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard", target="_blank"),
-        " | Last updated: February 2026",
-        style="text-align: center; padding: 1rem; font-size: 0.85rem; color: #666;"
+    "CocoaBoard | Created by Daisy Zhou, Vinay Valson, Eduardo Rivera | ",
+    ui.tags.a("GitHub Repo", href="https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard", target="_blank"),
+    " | Last updated: February 2026",
+    style="text-align: center; padding: 1rem; margin-top: 2rem; font-size: 0.85rem; color: #666; border-top: 1px solid #C4A35A;"
     ),
 )
 
