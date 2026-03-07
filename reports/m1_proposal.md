@@ -150,7 +150,7 @@ lines (e.g., dark chocolate) and seasonal campaigns.
 
 ### Visualizations
 
-The full analysis can be found in the EDA notebook: [`notebooks/eda_analysis.ipynb`](../notebooks/eda_analysis.ipynb).
+The full analysis can be found in the EDA report: [`reports/eda_analysis.pdf`](eda_analysis.pdf).
 
 **Visualization 1 — Total Revenue by Product (Bar Chart):**
 
