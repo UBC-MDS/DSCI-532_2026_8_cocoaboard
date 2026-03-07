@@ -6,11 +6,15 @@ dependencies:
   - python=3.12.12
   - pip=26.0.1
 
-  # App
-  - shiny>=1.5.1
+  # App (shiny>=1.5.1 not on conda-forge; install via pip below)
   - pandas=3.0.0
   - altair=6.0.0
 
   # Notebooks / dev
   - jupyterlab=4.5.4
   - ipykernel=7.2.0
+
+  # App deps from PyPI (shiny, querychat, chatlas, etc.)
+  - pip
+  - pip:
+    - -r requirements.txt
