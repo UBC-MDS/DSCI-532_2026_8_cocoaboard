@@ -5,3 +5,7 @@
 shiny==1.4.0
 pandas==3.0.0
 altair==6.0.0
+querychat==0.5.1
+chatlas==0.15.2
+python-dotenv=1.2.2
+anthropic=0.84.0 
