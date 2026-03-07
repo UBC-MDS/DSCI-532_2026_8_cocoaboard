@@ -44,6 +44,8 @@ to proactive, data-driven decision-making in real-time.
 
 ## Section 2: Description of the Data
 
+**Dataset Source:** [Chocolate Sales | Kaggle](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales)
+
 ### Stats
 
 The Chocolate Sales dataset contains 6 columns and provides
