@@ -33,12 +33,14 @@ if __package__ and __package__ != "__main__":
     from .value_boxes import value_boxes_ui
     from .map_chart import map_chart_ui
     from .leaderboard import leaderboard_ui
+    from .revenue_trend import revenue_trend_ui
 else:
     from theme import get_head_content
     from filters import filters_ui
     from value_boxes import value_boxes_ui
     from map_chart import map_chart_ui
     from leaderboard import leaderboard_ui
+    from revenue_trend import revenue_trend_ui
 
 # -- Constants ----------------------------------------------------------------
 _COUNTRY_CODES = {
@@ -125,6 +127,10 @@ app_ui = ui.page_navbar(
                 ),
                 col_widths=(7, 5),
             ),
+            ui.card(
+                revenue_trend_ui(),
+                style="height: 450px; overflow-y: auto;",
+            ),
             _footer,
             style="padding: 1rem;",
         ),
@@ -204,6 +210,48 @@ def server(input, output, session):
     @render.text
     def active_reps():
         return str(filtered_data()["Sales Person"].nunique())
+
+    @render.text
+    def avg_revenue():
+        data = filtered_data()
+        if data.empty:
+            return "$0"
+        return f"${data['Amount'].mean():,.0f}"
+
+    @render.text
+    def yoy_revenue():
+        # Compare the last available year's revenue (up to its last month)
+        # to the same months in the prior year. Not affected by date filter.
+        monthly = df.groupby(df["Date"].dt.to_period("M"))["Amount"].sum()
+        last_date = df["Date"].max()
+        current_year = last_date.year
+        last_month = last_date.month
+        current_rev = monthly[
+            (monthly.index.year == current_year) & (monthly.index.month <= last_month)
+        ].sum()
+        prior_rev = monthly[
+            (monthly.index.year == current_year - 1) & (monthly.index.month <= last_month)
+        ].sum()
+        if prior_rev == 0:
+            return "N/A"
+        pct = (current_rev - prior_rev) / prior_rev * 100
+        arrow = "+" if pct >= 0 else ""
+        return f"{arrow}{pct:.1f}%"
+
+    @render.text
+    def mom_revenue():
+        # Compare the last available month's revenue to the prior month.
+        # Not affected by date filter.
+        monthly = df.groupby(df["Date"].dt.to_period("M"))["Amount"].sum().sort_index()
+        if len(monthly) < 2:
+            return "N/A"
+        current_rev = monthly.iloc[-1]
+        prior_rev = monthly.iloc[-2]
+        if prior_rev == 0:
+            return "N/A"
+        pct = (current_rev - prior_rev) / prior_rev * 100
+        arrow = "+" if pct >= 0 else ""
+        return f"{arrow}{pct:.1f}%"
 
     @render.ui
     def map_chart():
@@ -287,6 +335,49 @@ def server(input, output, session):
         }])
         return pd.concat([leaderboard, summary], ignore_index=True)
     
+    @render.ui
+    def revenue_trend_chart():
+        data = filtered_data()
+        if data.empty:
+            return ui.p("No data to display.")
+
+        # Identify top 5 sales reps by total revenue
+        top5 = (
+            data.groupby("Sales Person")["Amount"]
+            .sum()
+            .nlargest(5)
+            .index.tolist()
+        )
+        trend_data = data[data["Sales Person"].isin(top5)].copy()
+        trend_data["Month"] = trend_data["Date"].dt.to_period("M").dt.to_timestamp()
+
+        monthly = (
+            trend_data.groupby(["Month", "Sales Person"])["Amount"]
+            .sum()
+            .reset_index()
+        )
+
+        chart = (
+            alt.Chart(monthly)
+            .mark_line(point=True)
+            .encode(
+                x=alt.X("Month:T", title="Month"),
+                y=alt.Y("Amount:Q", title="Revenue (USD)", axis=alt.Axis(format="$,.0f")),
+                color=alt.Color("Sales Person:N", title="Sales Rep"),
+                tooltip=[
+                    alt.Tooltip("Sales Person:N", title="Sales Rep"),
+                    alt.Tooltip("Month:T", title="Month", format="%b %Y"),
+                    alt.Tooltip("Amount:Q", title="Revenue", format="$,.0f"),
+                ],
+            )
+            .properties(width="container", height=350)
+        )
+
+        return ui.tags.iframe(
+            srcdoc=chart.to_html(),
+            style="width:100%;height:400px;border:none;",
+        )
+
     # ── Tab 2: AI chat ────────────────────────────────────────────────────────
     qc_vals = qc.server()
 

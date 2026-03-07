@@ -14,6 +14,15 @@ icon_boxes = ui.HTML(
 icon_reps = ui.HTML(
     f'<i class="bi bi-people" style="font-size: {_ICON_SIZE}; color: {_ICON_COLOR};"></i>'
 )
+icon_avg = ui.HTML(
+    f'<i class="bi bi-calculator" style="font-size: {_ICON_SIZE}; color: {_ICON_COLOR};"></i>'
+)
+icon_yoy = ui.HTML(
+    f'<i class="bi bi-graph-up-arrow" style="font-size: {_ICON_SIZE}; color: {_ICON_COLOR};"></i>'
+)
+icon_mom = ui.HTML(
+    f'<i class="bi bi-bar-chart-line" style="font-size: {_ICON_SIZE}; color: {_ICON_COLOR};"></i>'
+)
 
 
 def value_boxes_ui():
@@ -37,7 +46,25 @@ def value_boxes_ui():
             showcase=icon_reps,
             height="auto",
         ),
-        col_widths=(4, 4, 4),
+        ui.value_box(
+            "Avg Revenue (Filtered)",
+            ui.output_text("avg_revenue"),
+            showcase=icon_avg,
+            height="auto",
+        ),
+        ui.value_box(
+            "Year-over-Year Revenue",
+            ui.output_text("yoy_revenue"),
+            showcase=icon_yoy,
+            height="auto",
+        ),
+        ui.value_box(
+            "Month-over-Month Revenue",
+            ui.output_text("mom_revenue"),
+            showcase=icon_mom,
+            height="auto",
+        ),
+        col_widths=(4, 4, 4, 4, 4, 4),
         fill=False,
         fillable=False,
     )
