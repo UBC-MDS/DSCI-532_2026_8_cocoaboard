@@ -218,12 +218,25 @@ def server(input, output, session):
             return "$0"
         return f"${data['Amount'].mean():,.0f}"
 
+    @reactive.calc
+    def non_date_filtered_data():
+        """Apply country and product filters but not date filter."""
+        data = df.copy()
+        if input.country():
+            data = data[data["Country"].isin(input.country())]
+        if input.product():
+            data = data[data["Product"].isin(input.product())]
+        return data
+
     @render.text
     def yoy_revenue():
         # Compare the last available year's revenue (up to its last month)
-        # to the same months in the prior year. Not affected by date filter.
-        monthly = df.groupby(df["Date"].dt.to_period("M"))["Amount"].sum()
-        last_date = df["Date"].max()
+        # to the same months in the prior year. Responds to country/product filters.
+        data = non_date_filtered_data()
+        if data.empty:
+            return "N/A"
+        monthly = data.groupby(data["Date"].dt.to_period("M"))["Amount"].sum()
+        last_date = data["Date"].max()
         current_year = last_date.year
         last_month = last_date.month
         current_rev = monthly[
@@ -241,8 +254,11 @@ def server(input, output, session):
     @render.text
     def mom_revenue():
         # Compare the last available month's revenue to the prior month.
-        # Not affected by date filter.
-        monthly = df.groupby(df["Date"].dt.to_period("M"))["Amount"].sum().sort_index()
+        # Responds to country/product filters.
+        data = non_date_filtered_data()
+        if data.empty:
+            return "N/A"
+        monthly = data.groupby(data["Date"].dt.to_period("M"))["Amount"].sum().sort_index()
         if len(monthly) < 2:
             return "N/A"
         current_rev = monthly.iloc[-1]
