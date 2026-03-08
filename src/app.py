@@ -379,7 +379,11 @@ def server(input, output, session):
             .encode(
                 x=alt.X("Month:T", title="Month"),
                 y=alt.Y("Amount:Q", title="Revenue (USD)", axis=alt.Axis(format="$,.0f")),
-                color=alt.Color("Sales Person:N", title="Sales Rep"),
+                color=alt.Color(
+                    "Sales Person:N",
+                    title="Sales Rep",
+                    scale=alt.Scale(range=["#5D3A1A", "#8B5E3C", "#C4A35A", "#A0522D", "#D2956A"]),
+                ),
                 tooltip=[
                     alt.Tooltip("Sales Person:N", title="Sales Rep"),
                     alt.Tooltip("Month:T", title="Month", format="%b %Y"),
