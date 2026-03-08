@@ -41,7 +41,15 @@ The dashboard uses the **Chocolate Sales** dataset from Kaggle:
    ```
 
    
-3. **Run the dashboard:**
+3. **Optional — AI Chat tab:** To use the AI chat tab, set your Anthropic API key. Create a `.env` file in the project root (see `.env.example`) and add:
+
+   ```
+   ANTHROPIC_API_KEY=your_key_here
+   ```
+
+   Get a key at [Anthropic Console](https://console.anthropic.com/). Without it, the Dashboard tab works normally; the AI Chat tab will show an error when you send a message.
+
+4. **Run the dashboard:**
 
    ```bash
    shiny run src/app.py
