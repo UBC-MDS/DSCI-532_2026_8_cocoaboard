@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.0] - 2026-03-07
+
+### Added
+- Three new KPI value boxes: Average Revenue (filtered), Year-over-Year Revenue %, Month-over-Month Revenue %
+- Revenue trend line chart showing monthly revenue for the top 5 sales reps (responds to all filters)
+- YoY and MoM cards respond to country and product filters but ignore the date range, so they always compare full time periods
+
+### Changed
+- Default date range updated from a single month (Aug 2024) to the full latest year (Jan–Aug 2024). The previous single-month default left the revenue trend chart empty and gave a narrow view of KPIs. A full-year default provides meaningful trend data, actionable KPI context, and a better first impression of the dashboard. Country and product filters default to "All" to maximize the initial data scope.
+
 ## [0.2.0] - 2026-02-27
 
 ### Added

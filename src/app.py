@@ -114,7 +114,7 @@ app_ui = ui.page_navbar(
     ui.nav_panel(
         "Chocolate Sales Dashboard",
         ui.tags.div(
-            filters_ui(countries, products, "2024-08-01", "2024-08-31"), #set the default date range to 2025
+            filters_ui(countries, products, "2024-01-01", "2024-08-31"),
             value_boxes_ui(),
             ui.layout_columns(
                 ui.card(
