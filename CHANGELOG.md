@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.4.0] - 2026-03-XX
+
+**Quick links:** [Added](#added) · [Changed](#changed) · [Fixed](#fixed) · [Known Issues](#known-issues) · [Release Highlight](#release-highlight) · [Collaboration](#collaboration) · [Reflection](#reflection)
+
+### Added
+- Default date range start set to **1 January of the latest year** in the data, so the filter opens with a full-year view (e.g. 2025-01-01 → latest date) instead of the full dataset range. #55
+- `.env.example` for AI Chat: copy to `.env` and set `ANTHROPIC_API_KEY` to enable the AI Chat tab; see [README](README.md) and [CONTRIBUTING](CONTRIBUTING.md#code-and-project-structure).
+- [CONTRIBUTING](CONTRIBUTING.md): M3 collaboration retrospective, M4 norms, and guidelines for adding new components with **modularity** (see [Code and project structure](CONTRIBUTING.md#code-and-project-structure)).
+
+### Changed
+- Date filter default: **start** is now 1 Jan of the max year; **end** remains the latest date. Bounds (min/max) still allow the full data range. #62
+- CONTRIBUTING expanded with a short “M3 retrospective and M4 norms” section and a clear rule that **`app.py` is the parent** and new widgets/components live in dedicated modules (e.g. `filters.py`, `value_boxes.py`, `query_chat.py`) and are composed in `app.py`. #61
+
+### Fixed
+- (No code fixes in this release; focus is on defaults, docs, and collaboration process.)
+
+### Known Issues
+- AI Chat tab requires `ANTHROPIC_API_KEY`; without it the tab shows a disabled message. On Posit Connect, set the env var in the deployment settings.
+
+### Release Highlight
+- **Modular app structure and M4 collaboration:** [0.4.0] formalizes the layout in [CONTRIBUTING](CONTRIBUTING.md): [Added](#added) (default date, .env.example, CONTRIBUTING updates), [Changed](#changed) (date default, doc structure), and [Collaboration](#collaboration) (retrospective and norms) support a consistent way to add features and components.
+
+### Collaboration
+- **M3 retrospective:** What worked: clear job stories and component inventory (see [m2_spec](reports/m2_spec.md)), splitting dashboard vs. AI tab, and fixing layout (e.g. `page_navbar`) before adding features. What didn’t: layout/head-content bugs were hard to debug due to lack of modularity; Full notes in [CONTRIBUTING](CONTRIBUTING.md#m3-retrospective-and-m4-norms).
+- **M4 norms:** Documented in [CONTRIBUTING](CONTRIBUTING.md#m4-norms): add new UI/server logic in dedicated modules; keep `app.py` as the single parent that wires data and composes panels; run the app after changes; use PRs for decisions.
+
+### Reflection
+- This release aligns the repo with how the app is actually built: [Release Highlight](#release-highlight) (modular structure and collaboration) and [Collaboration](#collaboration) (M3 learnings and M4 norms) are now on record so new contributors and the team can add components (e.g. filters, value boxes, charts) in a consistent, maintainable way without overloading `app.py`.
+
+---
+
 ## [0.3.0] - 2026-03-07
 
 ### Added
