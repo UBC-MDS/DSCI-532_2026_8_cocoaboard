@@ -24,10 +24,13 @@ def dashboard_panel_ui(
     products: list,
     date_start: str,
     date_end: str,
+    date_default_start: str | None = None,
 ):
     """Build the Chocolate Sales Dashboard tab panel content."""
+    if date_default_start is None:
+        date_default_start = date_start
     return ui.tags.div(
-        filters_ui(countries, products, date_start, date_end),
+        filters_ui(countries, products, date_start, date_end, date_default_start),
         value_boxes_ui(),
         ui.layout_columns(
             ui.card(

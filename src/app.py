@@ -44,6 +44,10 @@ df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
 
 countries = sorted(df["Country"].unique().tolist())
 products = sorted(df["Product"].unique().tolist())
+date_min = str(df["Date"].min().date())
+date_max = str(df["Date"].max().date())
+# Default date range: 1 Jan of max year through latest date
+date_default_start = f"{df['Date'].max().year}-01-01"
 
 # -- QueryChat (AI chat) ------------------------------------------------------
 qc = create_query_chat(df, api_key=os.environ.get("ANTHROPIC_API_KEY"))
@@ -52,7 +56,7 @@ qc = create_query_chat(df, api_key=os.environ.get("ANTHROPIC_API_KEY"))
 app_ui = ui.page_navbar(
     ui.nav_panel(
         "Chocolate Sales Dashboard",
-        dashboard_panel_ui(countries, products, "2024-01-01", "2024-08-31"),
+        dashboard_panel_ui(countries, products, date_min, date_max, date_default_start),
     ),
     ui.nav_panel(
         "AI Chat Helper",
