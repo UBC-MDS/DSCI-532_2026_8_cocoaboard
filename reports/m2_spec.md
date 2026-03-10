@@ -8,7 +8,7 @@
 | 3   | When I select a chocolate product or date range, I want to see a world map colored by country revenue so I can identify which markets are performing best.   | ✅ Implemented |                                                                    |
 | 4   | When I want to evaluate team performance, I want to see a ranked leaderboard of sales reps with revenue, transactions, boxes, avg deal size, and revenue share so I can spot top performers. | ✅ Implemented |                                                                    |
 | 5   | When I want to track sales momentum, I want to see a revenue trend line chart for the top 5 sales reps over time so I can identify trends and seasonality. | ✅ Implemented | Added in M3. Shows monthly revenue for top 5 reps by total revenue. |
-| 6   | When I want to explore the data using natural language, I want an AI chat tab where I can ask questions and get filtered tables, maps, and downloadable CSVs. | ✅ Implemented | AI Chat Helper tab via QueryChat + Claude Haiku. Requires `ANTHROPIC_API_KEY`. |
+| 6   | When I want to explore the data using natural language, I want an AI chat tab where I can ask questions and get filtered tables, maps, and downloadable CSVs. | ✅ Implemented | Implemented in M3: AI Chat Helper tab via QueryChat & requires `ANTHROPIC_API_KEY`. |
 
 
 ### 2.2 Component Inventory
