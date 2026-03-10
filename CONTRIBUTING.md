@@ -54,7 +54,7 @@ Thanks for your interest in contributing. Here’s how to get set up and submit 
 ### M3 retrospective
 
 - **What worked:** Having clear job stories and a component inventory (e.g. in `reports/m2_spec.md`) made it easier to implement and review. Splitting the dashboard tab and the AI Chat tab kept scope clear. Fixing the layout (e.g. moving to `page_navbar` and fixing head content) before adding more features avoided compounding bugs.
-- **What didn’t:** Layout and head-content issues were subtle and time-consuming to debug; reactivity looked correct in some places but failed in others. Testing filter reactivity right after any layout change would have caught this earlier.
+- **What didn’t:** Layout and head-content issues were subtle and time-consuming to debug because of lack of modularity; reactivity looked correct in some places but failed in others. Testing filter reactivity right after any layout change would have caught this earlier. Modularity within the components would have made it easier for debugging.
 
 ### M4 norms
 
