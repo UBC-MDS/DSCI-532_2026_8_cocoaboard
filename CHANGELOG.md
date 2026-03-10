@@ -1,5 +1,60 @@
 # Changelog
 
+## [0.4.0] - YYYY-MM-DD
+
+Closes [#65](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/65). Release tracked in [#66](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/66).
+
+### Added
+
+- Default date range start set to **1 January of the latest year** in the data, so the filter opens with a full-year view (e.g. 2025-01-01 → latest date) instead of the full dataset range. ([#62](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/62))
+- `.env.example` for AI Chat: copy to `.env` and set `ANTHROPIC_API_KEY` to enable the AI Chat tab; see [README](README.md) and [CONTRIBUTING](CONTRIBUTING.md#code-and-project-structure).
+- [CONTRIBUTING](CONTRIBUTING.md): M3 collaboration retrospective, M4 norms, and guidelines for adding new components with **modularity** (see [Code and project structure](CONTRIBUTING.md#code-and-project-structure)). ([#64](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/64))
+
+### Changed
+
+- Date filter default: **start** is now 1 Jan of the max year; **end** remains the latest date. Bounds (min/max) still allow the full data range. ([#62](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/62))
+- CONTRIBUTING expanded with “M3 retrospective and M4 norms” and a clear rule that **`app.py` is the parent** and new widgets/components live in dedicated modules (e.g. `filters.py`, `value_boxes.py`, `query_chat.py`) and are composed in `app.py`. ([#61](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/61))
+- Addressed: modularity refactoring ([#61](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/61)); date range limits and default ([#62](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/62)).
+
+### Fixed
+
+- <!-- Bugs resolved since M3. -->
+
+- **Feedback prioritization issue link:** (none this release)
+
+### Known Issues
+
+- AI Chat tab requires `ANTHROPIC_API_KEY`; without it the tab shows a disabled message. On Posit Connect, set the env var in the deployment settings.
+
+### Release Highlight: [Name of your advanced feature]
+
+<!-- One short paragraph describing what you built and what it does for the user. -->
+
+- **Option chosen:** A / B / C / D
+- **PR:** #...
+- **Why this option over the others:** <!-- 1–2 sentences; link to your feature prioritization issue -->
+- **Feature prioritization issue link:** #...
+
+### Collaboration
+
+Summary of workflow and documentation improvements for M4: CHANGELOG and CONTRIBUTING updated per [#65](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/65) and [#64](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/64); modularity structure from [#61](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/61); release tracked in [#66](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/66).
+
+- **CONTRIBUTING.md:** [CONTRIBUTING](CONTRIBUTING.md#m3-retrospective-and-m4-norms) updated with M3 retrospective and M4 norms. ([#64](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/64))
+- **M3 retrospective:** What worked: clear job stories and component inventory ([m2_spec](reports/m2_spec.md)), splitting dashboard vs. AI tab, fixing layout (e.g. `page_navbar`) before adding features. What didn’t: layout/head-content bugs were hard to debug; testing filter reactivity right after layout changes would have helped. Full notes in [CONTRIBUTING](CONTRIBUTING.md#m3-retrospective-and-m4-norms).
+- **M4:** Documented modularity norms ([#61](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/61)): new UI/server logic in dedicated modules; `app.py` as single parent that wires data and composes panels; run the app after changes; use PRs for decisions.
+
+### Reflection
+
+<!-- Standard (see General Guidelines): what the dashboard does well, current limitations,
+     any intentional deviations from DSCI 531 visualization best practices. -->
+
+<!-- Trade-offs: one sentence on feedback prioritization - full rationale is in #<issue> and ### Changed above. -->
+
+<!-- Most useful: which lecture, material, or feedback shaped your work most this milestone,
+     and anything you wish had been covered. -->
+
+---
+
 ## [0.3.0] - 2026-03-07
 
 ### Added
