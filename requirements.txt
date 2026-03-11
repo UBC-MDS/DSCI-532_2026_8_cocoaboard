@@ -9,3 +9,6 @@ querychat==0.5.1
 chatlas==0.15.2
 python-dotenv==1.2.2
 anthropic==0.84.0
+ibis-framework==12.0.0
+duckdb==1.5.0 
+

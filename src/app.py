@@ -9,8 +9,10 @@ from pathlib import Path
 import sys
 import os
 from dotenv import load_dotenv
+import ibis
 
 load_dotenv()
+ibis.options.interactive = True
 
 # When run as a script (e.g. shiny run src/app.py), __package__ is unset;
 # add src to path so absolute imports work. When run as src.app (e.g. on
@@ -37,19 +39,23 @@ else:
     from revenue_trend import revenue_trend_chart_ui
     from map_chart import country_choropleth_ui
 
-# -- Load data ----------------------------------------------------------------
-df = pd.read_csv("data/raw/Chocolate_Sales.csv")
-df["Amount"] = df["Amount"].str.replace(r"[\$,]", "", regex=True).astype(float)
-df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y")
+# -- Load data via DuckDB (lazy) -----------------------------------------------
+con = ibis.duckdb.connect()
+t = con.read_parquet("data/processed/chocolate_sales.parquet")
 
-countries = sorted(df["Country"].unique().tolist())
-products = sorted(df["Product"].unique().tolist())
-date_min = str(df["Date"].min().date())
-date_max = str(df["Date"].max().date())
-# Default date range: 1 Jan of max year through latest date
-date_default_start = f"{df['Date'].max().year}-01-01"
+# Extract filter choices and date bounds (small one-time queries)
+countries = sorted(t.select("Country").distinct().to_pandas()["Country"].tolist())
+products = sorted(t.select("Product").distinct().to_pandas()["Product"].tolist())
+_dates = t.select(
+    date_min=t["Date"].min(),
+    date_max=t["Date"].max(),
+).to_pandas().iloc[0]
+date_min = str(_dates["date_min"].date())
+date_max = str(_dates["date_max"].date())
+date_default_start = f"{_dates['date_max'].year}-01-01"
 
 # -- QueryChat (AI chat) ------------------------------------------------------
+df = t.to_pandas() # convert the lazy ibis table expression to a dataFrame
 qc = create_query_chat(df, api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
 # -- UI -----------------------------------------------------------------------
@@ -72,17 +78,17 @@ def server(input, output, session):
     # ── Tab 1: traditional dashboard ─────────────────────────────────────────
     @reactive.calc
     def filtered_data():
-        data = df.copy()
+        query = t
         start, end = input.date_range()
-        data = data[
-            (data["Date"] >= pd.Timestamp(start)) & (data["Date"] <= pd.Timestamp(end))
-        ]
+        query = query.filter(
+             (t["Date"] >= str(start)) & (t["Date"] <= str(end))
+        )
         # multi-select: empty tuple/None means "All"
         if input.country():
-            data = data[data["Country"].isin(input.country())]
+            query = query.filter(t["Country"].isin(input.country()))
         if input.product():
-            data = data[data["Product"].isin(input.product())]
-        return data
+            query = query.filter(t["Product"].isin(input.country()))
+        return query.to_pandas()
 
     @render.text
     def total_revenue():
@@ -106,12 +112,12 @@ def server(input, output, session):
     @reactive.calc
     def non_date_filtered_data():
         """Apply country and product filters but not date filter."""
-        data = df.copy()
+        query = t
         if input.country():
-            data = data[data["Country"].isin(input.country())]
+            query = query.filter(t["Country"].isin(input.country()))
         if input.product():
-            data = data[data["Product"].isin(input.product())]
-        return data
+            query = query.filter(t["Product"].isin(input.product()))
+        return query.to_pandas()
 
     @render.text
     def yoy_revenue():
