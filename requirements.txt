@@ -12,6 +12,7 @@ anthropic==0.84.0
 ibis-framework==12.0.0
 duckdb==1.5.0
 pyarrow>=18.0.0
+pyarrow-hotfix>=0.7
 
 # Testing
 pytest>=8.0
