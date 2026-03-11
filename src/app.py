@@ -90,6 +90,20 @@ def server(input, output, session):
             query = query.filter(t["Product"].isin(input.country()))
         return query.to_pandas()
 
+    @reactive.calc
+    def map_data():
+        """Date- and product-filtered data for the map, without country filter.
+        Keeps all countries visible and clickable regardless of the country selection.
+        """
+        query = t
+        start, end = input.date_range()
+        query = query.filter(
+            (t["Date"] >= str(start)) & (t["Date"] <= str(end))
+        )
+        if input.product():
+            query = query.filter(t["Product"].isin(input.product()))
+        return query.to_pandas()
+
     @render.text
     def total_revenue():
         return f"${filtered_data()['Amount'].sum():,.0f}"
@@ -162,9 +176,24 @@ def server(input, output, session):
 
     @render.ui
     def map_chart():
+        selected = list(input.country()) if input.country() else None
         return country_choropleth_ui(
-            filtered_data(), COUNTRY_CODES, WORLD_TOPO_URL, 320, "350px"
+            map_data(), COUNTRY_CODES, WORLD_TOPO_URL, 320, "350px",
+            clickable=True, selected_countries=selected,
         )
+
+    @reactive.effect
+    def _on_map_country_click():
+        country = input.map_clicked_country()
+        if not country:
+            return
+        with reactive.isolate():
+            current = list(input.country()) if input.country() else []
+        if country in current:
+            updated = [c for c in current if c != country]
+        else:
+            updated = current + [country]
+        ui.update_selectize("country", selected=updated)
 
     @render.data_frame
     def leaderboard_table():
