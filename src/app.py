@@ -178,7 +178,7 @@ def server(input, output, session):
     def map_chart():
         selected = list(input.country()) if input.country() else None
         return country_choropleth_ui(
-            map_data(), COUNTRY_CODES, WORLD_TOPO_URL, 320, "350px",
+            map_data(), COUNTRY_CODES, WORLD_TOPO_URL, 340, "370px",
             clickable=True, selected_countries=selected,
         )
 

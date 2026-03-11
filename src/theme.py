@@ -59,9 +59,8 @@ h1, h2, h3, h4, .card-header {
   border-color: var(--chocolate-medium) !important;
   box-shadow: 0 0 0 0.2rem rgba(93, 58, 26, 0.2) !important;
 }
-/* Auto height based on widget content */
+/* Auto height based on widget content (value boxes and standalone cards only) */
 .bslib-card, .card {
-  height: auto !important;
   min-height: 0 !important;
 }
 .bslib-value-box {
