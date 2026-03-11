@@ -30,6 +30,7 @@ if __package__ and __package__ != "__main__":
     from .leaderboard import leaderboard_table_data
     from .revenue_trend import revenue_trend_chart_ui
     from .map_chart import country_choropleth_ui
+    from .kpi_calculations import compute_yoy_revenue, compute_mom_revenue
 else:
     from theme import get_head_content
     from constants import COUNTRY_CODES, WORLD_TOPO_URL
@@ -38,6 +39,7 @@ else:
     from leaderboard import leaderboard_table_data
     from revenue_trend import revenue_trend_chart_ui
     from map_chart import country_choropleth_ui
+    from kpi_calculations import compute_yoy_revenue, compute_mom_revenue
 
 # -- Load data via DuckDB (lazy) -----------------------------------------------
 con = ibis.duckdb.connect()
@@ -135,44 +137,11 @@ def server(input, output, session):
 
     @render.text
     def yoy_revenue():
-        # Compare the last available year's revenue (up to its last month)
-        # to the same months in the prior year. Responds to country/product filters.
-        data = non_date_filtered_data()
-        if data.empty:
-            return "N/A"
-        monthly = data.groupby(data["Date"].dt.to_period("M"))["Amount"].sum()
-        last_date = data["Date"].max()
-        current_year = last_date.year
-        last_month = last_date.month
-        current_rev = monthly[
-            (monthly.index.year == current_year) & (monthly.index.month <= last_month)
-        ].sum()
-        prior_rev = monthly[
-            (monthly.index.year == current_year - 1) & (monthly.index.month <= last_month)
-        ].sum()
-        if prior_rev == 0:
-            return "N/A"
-        pct = (current_rev - prior_rev) / prior_rev * 100
-        arrow = "+" if pct >= 0 else ""
-        return f"{arrow}{pct:.1f}%"
+        return compute_yoy_revenue(non_date_filtered_data())
 
     @render.text
     def mom_revenue():
-        # Compare the last available month's revenue to the prior month.
-        # Responds to country/product filters.
-        data = non_date_filtered_data()
-        if data.empty:
-            return "N/A"
-        monthly = data.groupby(data["Date"].dt.to_period("M"))["Amount"].sum().sort_index()
-        if len(monthly) < 2:
-            return "N/A"
-        current_rev = monthly.iloc[-1]
-        prior_rev = monthly.iloc[-2]
-        if prior_rev == 0:
-            return "N/A"
-        pct = (current_rev - prior_rev) / prior_rev * 100
-        arrow = "+" if pct >= 0 else ""
-        return f"{arrow}{pct:.1f}%"
+        return compute_mom_revenue(non_date_filtered_data())
 
     @render.ui
     def map_chart():
