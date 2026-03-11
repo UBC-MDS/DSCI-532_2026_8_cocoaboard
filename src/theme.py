@@ -59,9 +59,8 @@ h1, h2, h3, h4, .card-header {
   border-color: var(--chocolate-medium) !important;
   box-shadow: 0 0 0 0.2rem rgba(93, 58, 26, 0.2) !important;
 }
-/* Auto height based on widget content */
+/* Auto height based on widget content (value boxes and standalone cards only) */
 .bslib-card, .card {
-  height: auto !important;
   min-height: 0 !important;
 }
 .bslib-value-box {
@@ -92,12 +91,22 @@ h1, h2, h3, h4, .card-header {
 """
 
 
+_MAP_CLICK_LISTENER_JS = """
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'cocoa_map_click') {
+        Shiny.setInputValue('map_clicked_country', event.data.country, {priority: 'event'});
+    }
+});
+"""
+
+
 def get_head_content():
-    """Return head content: Bootstrap Icons and chocolate theme CSS."""
+    """Return head content: Bootstrap Icons, chocolate theme CSS, and map click listener."""
     return head_content(
         ui.tags.link(
             rel="stylesheet",
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css",
         ),
         ui.tags.style(CHOCOLATE_CSS),
+        ui.tags.script(_MAP_CLICK_LISTENER_JS),
     )
