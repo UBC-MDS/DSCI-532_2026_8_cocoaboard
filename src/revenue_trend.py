@@ -44,7 +44,7 @@ def revenue_trend_chart_ui(data: pd.DataFrame):
                 "Sales Person:N",
                 title="Sales Rep",
                 scale=alt.Scale(
-                    range=["#5D3A1A", "#8B5E3C", "#C4A35A", "#A0522D", "#D2956A"]
+                    range=["#E63946", "#1D8CD6", "#2ECC71", "#9B59B6", "#F39C12"]
                 ),
             ),
             tooltip=[
