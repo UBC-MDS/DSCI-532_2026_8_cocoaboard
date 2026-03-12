@@ -190,7 +190,7 @@ def server(input, output, session):
     @render.ui
     def ai_map_chart():
         return country_choropleth_ui(
-            qc_vals.df(), COUNTRY_CODES, WORLD_TOPO_URL, 280, "310px"
+            qc_vals.df(), COUNTRY_CODES, WORLD_TOPO_URL, 280, "400px"
         )
 
 

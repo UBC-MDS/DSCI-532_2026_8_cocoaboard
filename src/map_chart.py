@@ -39,6 +39,7 @@ def map_chart_ui():
         ui.card_header("Sales by Country (click to filter)"),
         ui.output_ui("map_chart"),
         full_screen=True,
+        class_="card-bg-white",
     )
 
 
