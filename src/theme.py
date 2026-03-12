@@ -29,6 +29,7 @@ h1, h2, h3, h4, .card-header {
   box-shadow: 0 4px 12px rgba(45, 24, 16, 0.12) !important;
   overflow: visible !important;
   transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+  position: relative;
 }
 .bslib-card:hover, .card:hover {
   box-shadow: 0 8px 24px rgba(45, 24, 16, 0.16) !important;
@@ -104,6 +105,44 @@ h1, h2, h3, h4, .card-header {
 .shiny-fill-container {
   min-height: 0 !important;
   height: auto !important;
+}
+
+/* Subtle loader overlay with spinner on main widgets while app is busy */
+.shiny-busy .card-bg-white::after,
+.shiny-busy .bslib-value-box::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.shiny-busy .card-bg-white::before,
+.shiny-busy .bslib-value-box::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-top: -1.125rem;
+  margin-left: -1.125rem;
+  border-radius: 50%;
+  border: 3px solid rgba(93, 58, 26, 0.25);
+  border-top-color: var(--chocolate-medium);
+  animation: cocoa-spin 0.8s linear infinite;
+  z-index: 11;
+}
+
+@keyframes cocoa-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Consistent sidebar width across tabs (Dashboard + AI Chat Helper) */
