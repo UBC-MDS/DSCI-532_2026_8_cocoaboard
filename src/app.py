@@ -89,7 +89,7 @@ def server(input, output, session):
         if input.country():
             query = query.filter(t["Country"].isin(input.country()))
         if input.product():
-            query = query.filter(t["Product"].isin(input.country()))
+            query = query.filter(t["Product"].isin(input.product()))
         return query.to_pandas()
 
     @reactive.calc
@@ -171,6 +171,19 @@ def server(input, output, session):
     @render.ui
     def revenue_trend_chart():
         return revenue_trend_chart_ui(filtered_data())
+
+    @reactive.effect
+    @reactive.event(input.clear_selections)
+    def _clear_country_product():
+        ui.update_selectize("country", selected=[])
+        ui.update_selectize("product", selected=[])
+
+    @reactive.effect
+    @reactive.event(input.reset_filters)
+    def _reset_all_filters():
+        ui.update_date_range("date_range", start=date_default_start, end=date_max)
+        ui.update_selectize("country", selected=[])
+        ui.update_selectize("product", selected=[])
 
     # ── Tab 2: AI chat ────────────────────────────────────────────────────────
     qc_vals = qc.server()

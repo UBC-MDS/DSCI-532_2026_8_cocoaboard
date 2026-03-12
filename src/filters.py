@@ -77,5 +77,18 @@ def filters_sidebar_ui(
         date_default_start = date_min
     return ui.tags.div(
         *_filter_inputs(countries, products, date_min, date_max, date_default_start),
+        ui.tags.div(
+            ui.input_action_button(
+                "clear_selections",
+                "Clear selections",
+                class_="btn-outline-secondary w-100",
+            ),
+            ui.input_action_button(
+                "reset_filters",
+                "Reset filters",
+                class_="btn-secondary w-100",
+            ),
+            style="display: flex; flex-direction: column; gap: 0.5rem;",
+        ),
         style="display: flex; flex-direction: column; gap: 1rem;",
     )
