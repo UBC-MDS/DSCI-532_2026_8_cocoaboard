@@ -32,7 +32,7 @@ def product_revenue_chart_ui(data: pd.DataFrame):
     # Pie chart with a colorful palette; tooltips show revenue and share
     chart = (
         alt.Chart(by_product)
-        .mark_arc(innerRadius=0, outerRadius=120)
+        .mark_arc(innerRadius=0, outerRadius=100)
         .encode(
             theta=alt.Theta("Amount:Q", stack=True),
             color=alt.Color(
@@ -65,5 +65,5 @@ def product_revenue_chart_ui(data: pd.DataFrame):
 
     return ui.tags.iframe(
         srcdoc=chart.to_html(),
-        style="width:100%;height:260px;border:none;",
+        style="width:100%;height:350px;border:none;",
     )

@@ -30,6 +30,8 @@ h1, h2, h3, h4, .card-header {
   overflow: visible !important;
   transition: box-shadow 0.2s ease, transform 0.2s ease !important;
   position: relative;
+  margin-top: 0.15rem !important;
+  margin-bottom: 0.15rem !important;
 }
 .bslib-card:hover, .card:hover {
   box-shadow: 0 8px 24px rgba(45, 24, 16, 0.16) !important;
@@ -96,15 +98,75 @@ h1, h2, h3, h4, .card-header {
 .bslib-grid, .bslib-fill-container, [class*="layout-columns"] {
   align-items: start !important;
   overflow: visible !important;
+  row-gap: 0.35rem !important;
+  column-gap: 0.5rem !important;
 }
 .bslib-grid > *, .bslib-fill-container > * {
   height: auto !important;
   min-height: 0 !important;
 }
+
+/* Reduce default bslib bottom spacing between stacked components */
+.bslib-mb-spacing {
+  margin-bottom: 0.25rem !important;
+}
 /* Page fillable: let content determine height */
 .shiny-fill-container {
   min-height: 0 !important;
   height: auto !important;
+}
+
+/* Full-screen (expanded) widgets should truly fill the viewport */
+.bslib-full-screen,
+.bslib-fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+}
+
+.bslib-full-screen .card,
+.bslib-fullscreen .card {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+.bslib-full-screen .card-bg-white iframe,
+.bslib-fullscreen .card-bg-white iframe {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+/* Mobile & tablet tweaks for layout and charts */
+@media (max-width: 1024px) {
+  /* Let sidebar use full width when opened on small screens */
+  .bslib-sidebar-layout .bslib-sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  /* Stack dashboard widgets so each occupies full width */
+  [class*="layout-columns"] > * {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Make KPI value boxes stack nicely with a bit of spacing */
+  .bslib-value-box {
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Ensure embedded charts fit within cards without inner scrolling */
+  .card-bg-white iframe {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 220px !important;
+  }
 }
 
 /* Subtle loader overlay with spinner on main widgets while app is busy */
