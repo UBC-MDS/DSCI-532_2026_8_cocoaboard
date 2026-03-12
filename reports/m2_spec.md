@@ -3,7 +3,7 @@
 
 | #   | Job Story                                                                                                                                                   | Status         | Notes                                                              |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------ |
-| 1   | When I open the dashboard, I want to see KPI summary cards so I can get an at-a-glance overview of total revenue, average revenue, YoY growth, and MoM growth.     | ✅ Implemented |                                                                    |
+| 1   | When I open the dashboard, I want to see KPI summary cards so I can get an at-a-glance overview of total revenue, average revenue, YoY growth, MoM growth, and how concentrated revenue is in the top product and country.     | ✅ Implemented | Top Product Revenue Share and Top Country Revenue Share cards added. |
 | 2   | When I apply date, country, or product filters, I want all metrics and charts to update simultaneously so I can analyze any specific segment quickly (including product-level analysis to identify best-sellers).        | ✅ Implemented | Revenue by Product pie chart added for product-level analysis.     |
 | 3   | When I select a chocolate product or date range, I want to see a world map colored by country revenue so I can identify which markets are performing best.   | ✅ Implemented | The map is clickable: clicking a country toggles it in the Country filter. |
 | 4   | When I want to evaluate team performance, I want to see a ranked leaderboard of sales reps with revenue, transactions, boxes, avg deal size, and revenue share so I can spot top performers. | ✅ Implemented |                                                                    |
@@ -25,6 +25,8 @@
 | `non_date_filtered_data` | Reactive calc | `@reactive.calc`                  | `input_country`, `input_product`                      | #1         |
 | `total_revenue`       | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
 | `avg_revenue`         | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
+| `top_product_share`   | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
+| `top_country_share`   | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
 | `yoy_revenue`         | Output        | `@render.text`                       | `non_date_filtered_data`                             | #1         |
 | `mom_revenue`         | Output        | `@render.text`                       | `non_date_filtered_data`                             | #1         |
 | `map_chart`           | Output        | `@render.ui` (Altair choropleth; clickable)     | `filtered_data`                                      | #2, #3     |
@@ -66,6 +68,8 @@ flowchart TD
   subgraph "Tab 1 Outputs"
     R([total_revenue])
     AVG([avg_revenue])
+    TPS([top_product_share])
+    TCS([top_country_share])
     YOY([yoy_revenue])
     MOM([mom_revenue])
     M([map_chart])
@@ -76,6 +80,8 @@ flowchart TD
 
   F --> R
   F --> AVG
+  F --> TPS
+  F --> TCS
   F --> M
   F --> L
   F --> RT
@@ -98,7 +104,7 @@ flowchart TD
 
 - **Depends on:** `input_date_range`, `input_country`, `input_product`
 - **Transformation:** Copies the full dataset, restricts rows to the selected date window, then filters to the selected countries and/or products when any are chosen (empty selection = all).
-- **Consumed by:** `total_revenue`, `avg_revenue`, `map_chart`, `leaderboard_table`, `revenue_trend_chart`, `product_revenue_chart`
+- **Consumed by:** `total_revenue`, `avg_revenue`, `top_product_share`, `top_country_share`, `map_chart`, `leaderboard_table`, `revenue_trend_chart`, `product_revenue_chart`
 
 **`non_date_filtered_data`** (`@reactive.calc`)
 
@@ -113,6 +119,14 @@ flowchart TD
 **`mom_revenue`** (`@render.text`)
 
 - **Logic:** Groups by month, compares the last available month's total revenue to the prior month. Returns the percentage change with a +/− sign, or "N/A" if insufficient data.
+
+**`top_product_share`** (`@render.text`)
+
+- **Logic:** Aggregates `filtered_data` by product (`Amount` sum), finds the product with the highest revenue, and returns its share of total revenue as a percentage (e.g., "32.5%"). Shows how concentrated sales are in the single best-selling product for the current filters.
+
+**`top_country_share`** (`@render.text`)
+
+- **Logic:** Aggregates `filtered_data` by country (`Amount` sum), finds the country with the highest revenue, and returns its share of total revenue as a percentage. Highlights geographic concentration and risk in the current filtered segment.
 
 **Clickable map filtering** (`map_chart` in `map_chart.py` + server handler in `app.py`)
 
