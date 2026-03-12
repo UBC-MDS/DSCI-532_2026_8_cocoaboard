@@ -322,6 +322,22 @@ h1, h2, h3, h4, .card-header {
     display: none;
   }
 }
+.ai-charts-row {
+  display: flex;
+  align-items: stretch;
+}
+.ai-charts-row > .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.ai-charts-row > .card .card-body {
+  flex: 1;
+}
+.ai-charts-row > .card iframe {
+  height: 100% !important;
+  min-height: 350px;
+}
 """
 
 
