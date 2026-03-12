@@ -105,6 +105,45 @@ h1, h2, h3, h4, .card-header {
   min-height: 0 !important;
   height: auto !important;
 }
+
+/* Consistent sidebar width across tabs (Dashboard + AI Chat Helper) */
+.bslib-sidebar-layout .bslib-sidebar {
+  width: 360px !important;
+  flex: 0 0 360px !important;
+  max-width: 360px !important;
+}
+
+/* Year radio buttons styled as a button group */
+.year-buttons .shiny-input-radiogroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.year-buttons .form-check {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.year-buttons .form-check-input {
+  display: none !important;
+}
+.year-buttons .form-check-label {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--chocolate-light);
+  border-radius: 8px;
+  background: #FFFEFB;
+  color: var(--chocolate-dark);
+  cursor: pointer;
+  user-select: none;
+}
+.year-buttons .form-check-input:checked + .form-check-label {
+  background: var(--chocolate-medium);
+  border-color: var(--chocolate-medium);
+  color: #fff;
+}
+.year-buttons .form-check-label:hover {
+  border-color: var(--chocolate-medium);
+}
 """
 
 

@@ -56,6 +56,29 @@ date_min = str(_dates["date_min"].date())
 date_max = str(_dates["date_max"].date())
 date_default_start = f"{_dates['date_max'].year}-01-01"
 
+# Available years for Year selector
+years = sorted(
+    t.mutate(year=t["Date"].year())
+    .select("year")
+    .distinct()
+    .to_pandas()["year"]
+    .astype(int)
+    .tolist()
+)
+
+# Per-year date bounds (to set date range when a year is selected)
+_year_bounds = (
+    t.mutate(year=t["Date"].year())
+    .group_by("year")
+    .aggregate(year_start=t["Date"].min(), year_end=t["Date"].max())
+    .to_pandas()
+)
+year_bounds = {
+    str(int(r["year"])): (str(r["year_start"].date()), str(r["year_end"].date()))
+    for _, r in _year_bounds.iterrows()
+}
+default_year = str(int(_dates["date_max"].year))
+
 # -- QueryChat (AI chat) ------------------------------------------------------
 df = t.to_pandas() # convert the lazy ibis table expression to a dataFrame
 qc = create_query_chat(df, api_key=os.environ.get("ANTHROPIC_API_KEY"))
@@ -64,7 +87,7 @@ qc = create_query_chat(df, api_key=os.environ.get("ANTHROPIC_API_KEY"))
 app_ui = ui.page_navbar(
     ui.nav_panel(
         "Chocolate Sales Dashboard",
-        dashboard_panel_ui(countries, products, date_min, date_max, date_default_start),
+        dashboard_panel_ui(countries, products, date_min, date_max, years, date_default_start),
     ),
     ui.nav_panel(
         "AI Chat Helper",
@@ -78,6 +101,21 @@ app_ui = ui.page_navbar(
 # -- Server --------------------------------------------------------------------
 def server(input, output, session):
     # ── Tab 1: traditional dashboard ─────────────────────────────────────────
+    @reactive.effect
+    @reactive.event(input.year)
+    def _on_year_change():
+        yr = input.year()
+        if not yr:
+            return
+        if yr == "All":
+            ui.update_date_range("date_range", start=date_min, end=date_max)
+            return
+        bounds = year_bounds.get(str(yr))
+        if not bounds:
+            return
+        start, end = bounds
+        ui.update_date_range("date_range", start=start, end=end)
+
     @reactive.calc
     def filtered_data():
         query = t
@@ -137,7 +175,9 @@ def server(input, output, session):
 
     @render.text
     def yoy_revenue():
-        return compute_yoy_revenue(non_date_filtered_data())
+        selected_year = input.year()
+        year = int(selected_year) if selected_year and selected_year != "All" else None
+        return compute_yoy_revenue(non_date_filtered_data(), year=year)
 
     @render.text
     def mom_revenue():
@@ -147,7 +187,7 @@ def server(input, output, session):
     def map_chart():
         selected = list(input.country()) if input.country() else None
         return country_choropleth_ui(
-            map_data(), COUNTRY_CODES, WORLD_TOPO_URL, 340, "370px",
+            map_data(), COUNTRY_CODES, WORLD_TOPO_URL, 340, "400px",
             clickable=True, selected_countries=selected,
         )
 
@@ -182,8 +222,26 @@ def server(input, output, session):
     @reactive.event(input.reset_filters)
     def _reset_all_filters():
         ui.update_date_range("date_range", start=date_default_start, end=date_max)
+        ui.update_radio_buttons("year", selected=default_year)
         ui.update_selectize("country", selected=[])
         ui.update_selectize("product", selected=[])
+
+    @reactive.effect
+    @reactive.event(input.year)
+    def _sync_date_range_to_year():
+        selected = input.year()
+        if not selected or selected == "All":
+            return
+
+        y = int(selected)
+        # Clamp to dataset bounds when selecting boundary years
+        start = f"{y}-01-01"
+        end = f"{y}-12-31"
+        if y == int(date_min[:4]):
+            start = date_min
+        if y == int(date_max[:4]):
+            end = date_max
+        ui.update_date_range("date_range", start=start, end=end)
 
     # ── Tab 2: AI chat ────────────────────────────────────────────────────────
     qc_vals = qc.server()

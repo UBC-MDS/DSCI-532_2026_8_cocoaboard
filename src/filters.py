@@ -9,9 +9,21 @@ def _filter_inputs(
     date_min: str,
     date_max: str,
     date_default_start: str,
+    years: list[int],
 ):
     """Shared filter inputs (date, country, product). Used by both card and sidebar."""
+    default_year = str(max(years)) if years else "All"
     return [
+        ui.tags.div(
+            ui.input_radio_buttons(
+                "year",
+                "Year",
+                choices=["All"] + [str(y) for y in years],
+                selected=default_year,
+                inline=True,
+            ),
+            class_="year-buttons",
+        ),
         ui.input_date_range(
             "date_range",
             "Date Range",
@@ -44,6 +56,7 @@ def filters_ui(
     products: list[str],
     date_min: str,
     date_max: str,
+    years: list[int],
     date_default_start: str | None = None,
 ):
     """Build the filters card UI with filters arranged in a row (legacy/inline use)."""
@@ -53,8 +66,10 @@ def filters_ui(
         ui.card(
             ui.card_header("Filters"),
             ui.layout_columns(
-                *_filter_inputs(countries, products, date_min, date_max, date_default_start),
-                col_widths=(4, 4, 4),
+                *_filter_inputs(
+                    countries, products, date_min, date_max, date_default_start, years
+                ),
+                col_widths=(12, 4, 4, 4),
                 fill=False,
                 fillable=False,
             ),
@@ -70,13 +85,16 @@ def filters_sidebar_ui(
     products: list[str],
     date_min: str,
     date_max: str,
+    years: list[int],
     date_default_start: str | None = None,
 ):
     """Build filter inputs for use inside a collapsible sidebar (stacked vertically)."""
     if date_default_start is None:
         date_default_start = date_min
     return ui.tags.div(
-        *_filter_inputs(countries, products, date_min, date_max, date_default_start),
+        *_filter_inputs(
+            countries, products, date_min, date_max, date_default_start, years
+        ),
         ui.tags.div(
             ui.input_action_button(
                 "clear_selections",
