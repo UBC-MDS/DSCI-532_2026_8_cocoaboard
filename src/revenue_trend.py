@@ -11,6 +11,7 @@ def revenue_trend_ui():
         ui.card_header("Revenue Trend — Top 5 Sales Reps"),
         ui.output_ui("revenue_trend_chart"),
         full_screen=True,
+        class_="card-bg-white",
     )
 
 
@@ -53,7 +54,7 @@ def revenue_trend_chart_ui(data: pd.DataFrame):
                 alt.Tooltip("Amount:Q", title="Revenue", format="$,.0f"),
             ],
         )
-        .properties(width="container", height=350)
+        .properties(width="container")
     )
 
     return ui.tags.iframe(

@@ -26,8 +26,12 @@ h1, h2, h3, h4, .card-header {
   background-color: rgba(255, 251, 245, 0.95) !important;
   border: 1px solid var(--chocolate-light) !important;
   border-radius: 10px !important;
-  box-shadow: 0 2px 8px rgba(45, 24, 16, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(45, 24, 16, 0.12) !important;
   overflow: visible !important;
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+.bslib-card:hover, .card:hover {
+  box-shadow: 0 8px 24px rgba(45, 24, 16, 0.16) !important;
 }
 .bslib-card .card-body, .card .card-body {
   overflow: visible !important;
@@ -59,6 +63,19 @@ h1, h2, h3, h4, .card-header {
   border-color: var(--chocolate-medium) !important;
   box-shadow: 0 0 0 0.2rem rgba(93, 58, 26, 0.2) !important;
 }
+/* Map and chart cards: white background with shadow and hover */
+.card-bg-white {
+  background: white !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  transition: box-shadow 0.2s ease !important;
+}
+.card-bg-white:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14) !important;
+}
+.card-bg-white .card-header {
+  background: white !important;
+  border-bottom: 1px solid #dee2e6 !important;
+}
 /* Auto height based on widget content (value boxes and standalone cards only) */
 .bslib-card, .card {
   min-height: 0 !important;
@@ -87,6 +104,45 @@ h1, h2, h3, h4, .card-header {
 .shiny-fill-container {
   min-height: 0 !important;
   height: auto !important;
+}
+
+/* Consistent sidebar width across tabs (Dashboard + AI Chat Helper) */
+.bslib-sidebar-layout .bslib-sidebar {
+  width: 360px !important;
+  flex: 0 0 360px !important;
+  max-width: 360px !important;
+}
+
+/* Year radio buttons styled as a button group */
+.year-buttons .shiny-input-radiogroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.year-buttons .form-check {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.year-buttons .form-check-input {
+  display: none !important;
+}
+.year-buttons .form-check-label {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--chocolate-light);
+  border-radius: 8px;
+  background: #FFFEFB;
+  color: var(--chocolate-dark);
+  cursor: pointer;
+  user-select: none;
+}
+.year-buttons .form-check-input:checked + .form-check-label {
+  background: var(--chocolate-medium);
+  border-color: var(--chocolate-medium);
+  color: #fff;
+}
+.year-buttons .form-check-label:hover {
+  border-color: var(--chocolate-medium);
 }
 """
 

@@ -24,6 +24,7 @@ def dashboard_panel_ui(
     products: list,
     date_start: str,
     date_end: str,
+    years: list[int],
     date_default_start: str | None = None,
 ):
     """Build the Chocolate Sales Dashboard tab panel content (filters in left sidebar)."""
@@ -31,32 +32,21 @@ def dashboard_panel_ui(
         date_default_start = date_start
     sidebar = ui.sidebar(
         filters_sidebar_ui(
-            countries, products, date_start, date_end, date_default_start
+            countries, products, date_start, date_end, years, date_default_start
         ),
         title="Filters",
         position="left",
         open="open",
-        width=280,
     )
     main_content = ui.tags.div(
         value_boxes_ui(),
         ui.layout_columns(
-            ui.card(
-                map_chart_ui(),
-                style="height: 450px; overflow-y: auto;",
-            ),
-            ui.card(
-                leaderboard_ui(),
-                style="height: 450px; overflow-y: auto;",
-            ),
-            col_widths=(7, 5),
+            ui.tags.div(map_chart_ui()),
+            ui.tags.div(revenue_trend_ui()),
+            col_widths=(6, 6),
         ),
-        ui.card(
-            revenue_trend_ui(),
-            style="height: 450px; overflow-y: auto;",
-        ),
-        footer_ui(),
-        style="padding: 1rem;",
+        ui.tags.div(leaderboard_ui()),
+        footer_ui()
     )
     return ui.layout_sidebar(
         sidebar,
