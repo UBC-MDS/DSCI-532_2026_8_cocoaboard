@@ -128,6 +128,11 @@ def server(input, output, session):
     def filtered_data():
         query = t
         start, end = input.date_range()
+        # Guard against uninitialized date_range returning None values
+        if not start:
+            start = date_min
+        if not end:
+            end = date_max
         query = query.filter(
              (t["Date"] >= str(start)) & (t["Date"] <= str(end))
         )
@@ -145,6 +150,11 @@ def server(input, output, session):
         """
         query = t
         start, end = input.date_range()
+        # Guard against uninitialized date_range returning None values
+        if not start:
+            start = date_min
+        if not end:
+            end = date_max
         query = query.filter(
             (t["Date"] >= str(start)) & (t["Date"] <= str(end))
         )
