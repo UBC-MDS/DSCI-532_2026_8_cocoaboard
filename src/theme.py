@@ -88,7 +88,7 @@ h1, h2, h3, h4, .card-header {
   min-height: 0 !important;
 }
 .bslib-value-box .card-body {
-  min-height: 0 !important;
+  min-height: 3.25rem !important;
 }
 .form-control, .form-select, .selectize-input {
   height: auto !important;
@@ -109,6 +109,25 @@ h1, h2, h3, h4, .card-header {
 /* Reduce default bslib bottom spacing between stacked components */
 .bslib-mb-spacing {
   margin-bottom: 0.25rem !important;
+}
+
+/* Two-line KPI layout inside value boxes */
+.kpi-two-line {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 2.75rem;
+}
+
+.kpi-subtitle {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.05rem;
+}
+
+.kpi-main {
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 /* Page fillable: let content determine height */
 .shiny-fill-container {

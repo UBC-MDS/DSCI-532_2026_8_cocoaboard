@@ -1,4 +1,4 @@
-"""Revenue by product pie chart for product-level analysis and best-seller identification."""
+"""Revenue by product horizontal bar chart for product-level analysis and best-seller identification."""
 
 import pandas as pd
 import altair as alt
@@ -16,7 +16,7 @@ def product_revenue_ui():
 
 
 def product_revenue_chart_ui(data: pd.DataFrame):
-    """Build the revenue-by-product pie chart (uses filtered data: year, country, product)."""
+    """Build the revenue-by-product area chart (uses filtered data: year, country, product)."""
     if data is None or data.empty:
         return ui.p("No data to display.")
 
@@ -29,15 +29,17 @@ def product_revenue_chart_ui(data: pd.DataFrame):
     total = by_product["Amount"].sum()
     by_product["Share"] = (by_product["Amount"] / total * 100).round(1)
 
-    # Pie chart with a colorful palette; tooltips show revenue and share
+    # Horizontal bar (area) chart: bar length encodes revenue
+    bar_height = max(160, min(360, 26 * len(by_product)))
     chart = (
         alt.Chart(by_product)
-        .mark_arc(innerRadius=0, outerRadius=100)
+        .mark_bar()
         .encode(
-            theta=alt.Theta("Amount:Q", stack=True),
+            y=alt.Y("Product:N", sort="-x", title="Product"),
+            x=alt.X("Amount:Q", title="Revenue (USD)", axis=alt.Axis(format="$,.0f")),
             color=alt.Color(
                 "Product:N",
-                title="Product",
+                legend=None,
                 scale=alt.Scale(
                     range=[
                         "#E63946",
@@ -52,7 +54,6 @@ def product_revenue_chart_ui(data: pd.DataFrame):
                         "#06D6A0",
                     ]
                 ),
-                sort=alt.EncodingSortField("Amount", op="sum", order="descending"),
             ),
             tooltip=[
                 alt.Tooltip("Product:N", title="Product"),
@@ -60,7 +61,7 @@ def product_revenue_chart_ui(data: pd.DataFrame):
                 alt.Tooltip("Share:Q", title="Share (%)", format=".1f"),
             ],
         )
-        .properties(width="container")
+        .properties(width="container", height=bar_height)
     )
 
     return ui.tags.iframe(
