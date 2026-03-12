@@ -39,7 +39,12 @@ def revenue_trend_chart_ui(data: pd.DataFrame):
         alt.Chart(monthly)
         .mark_line(point=True)
         .encode(
-            x=alt.X("Month:T", title="Month"),
+            x=alt.X(
+                "Month:T",
+                title="Month",
+                timeUnit="yearmonth",
+                axis=alt.Axis(tickCount="month", format="%b %Y", labelAngle=-45),
+            ),
             y=alt.Y("Amount:Q", title="Revenue (USD)", axis=alt.Axis(format="$,.0f")),
             color=alt.Color(
                 "Sales Person:N",
