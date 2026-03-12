@@ -8,12 +8,24 @@ from shiny import ui
 
 DATA_DESCRIPTION = """
 Chocolate sales transaction data with the following columns:
-- Sales Person: name of the sales representative
-- Country: one of Australia, Canada, India, New Zealand, UK, USA
-- Product: chocolate product name (e.g. Mint Chip Choco, 85% Dark Bars, Peanut Butter Cubes)
+- Sales Person: name of the sales representative (string)
+- Country: one of Australia, Canada, India, New Zealand, UK, USA (string)
+- Product: chocolate product name, e.g. Mint Chip Choco, 85% Dark Bars, Peanut Butter Cubes (string)
 - Date: transaction date (datetime)
-- Amount: sale amount in USD (float)
+- Amount: sale amount in USD (float, e.g. 5320.00)
 - Boxes Shipped: number of boxes shipped (integer)
+
+IMPORTANT SQL CONSTRAINT: LIMIT is not supported. For "top N" queries, use a CTE
+with ROW_NUMBER() window function and filter with WHERE rank <= N. Example:
+  WITH ranked AS (
+    SELECT *, ROW_NUMBER() OVER (ORDER BY Amount DESC) as rank
+    FROM chocolate_sales
+  )
+  SELECT "Sales Person", Country, Product, Date, Amount, "Boxes Shipped"
+  FROM ranked WHERE rank <= 10
+
+Common queries: filter by country, product, sales person, date range,
+or amount thresholds (e.g. Amount > 10000).
 """
 
 CHAT_GREETING_DISABLED = (
@@ -28,6 +40,8 @@ CHAT_GREETING_ENABLED = """Ask me anything about CocoaBoard chocolate sales data
 * <span class="suggestion">Which sales rep has the highest revenue?</span>
 * <span class="suggestion">Filter to Mint Chip Choco products</span>
 * <span class="suggestion">Show top 10 transactions by amount</span>
+* <span class="suggestion">Show transactions over $10,000</span>
+* <span class="suggestion">Compare revenue between UK and USA</span>
 """
 
 
