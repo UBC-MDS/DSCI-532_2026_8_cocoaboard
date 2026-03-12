@@ -17,10 +17,16 @@ icon_yoy = ui.HTML(
 icon_mom = ui.HTML(
     f'<i class="bi bi-bar-chart-line" style="font-size: {_ICON_SIZE}; color: {_ICON_COLOR};"></i>'
 )
+icon_top_product = ui.HTML(
+    f'<i class="bi bi-pie-chart-fill" style="font-size: {_ICON_SIZE}; color: {_ICON_COLOR};"></i>'
+)
+icon_top_country = ui.HTML(
+    f'<i class="bi bi-geo-alt-fill" style="font-size: {_ICON_SIZE}; color: {_ICON_COLOR};"></i>'
+)
 
 
 def value_boxes_ui():
-    """Build a 2x2 grid of KPI value boxes (4 cards)."""
+    """Build a 3x2 grid of KPI value boxes (6 cards)."""
     row1 = ui.layout_columns(
         ui.value_box(
             "Total Revenue",
@@ -55,8 +61,26 @@ def value_boxes_ui():
         fill=False,
         fillable=False,
     )
+    row3 = ui.layout_columns(
+        ui.value_box(
+            "Top Product Revenue Share",
+            ui.output_text("top_product_share"),
+            showcase=icon_top_product,
+            height="auto",
+        ),
+        ui.value_box(
+            "Top Country Revenue Share",
+            ui.output_text("top_country_share"),
+            showcase=icon_top_country,
+            height="auto",
+        ),
+        col_widths=(6, 6),
+        fill=False,
+        fillable=False,
+    )
     return ui.tags.div(
         row1,
         row2,
-        style="display: flex; flex-direction: column; gap: 0.75rem;",
+        row3,
+        style="display: flex; flex-direction: column;",
     )
