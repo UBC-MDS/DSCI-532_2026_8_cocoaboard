@@ -157,31 +157,55 @@ def server(input, output, session):
             return "$0"
         return f"${data['Amount'].mean():,.0f}"
 
-    @render.text
+    @render.ui
     def top_product_share():
         data = filtered_data()
         if data.empty:
-            return "N/A"
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
         by_product = data.groupby("Product")["Amount"].sum()
         total = by_product.sum()
         if total <= 0:
-            return "N/A"
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
         top_product = by_product.idxmax()
         share = by_product.max() / total * 100
-        return f"{top_product} — {share:,.1f}%"
+        return ui.tags.div(
+            ui.tags.div(str(top_product), class_="kpi-subtitle"),
+            ui.tags.div(f"{share:,.1f}%", class_="kpi-main"),
+            class_="kpi-two-line",
+        )
 
-    @render.text
+    @render.ui
     def top_country_share():
         data = filtered_data()
         if data.empty:
-            return "N/A"
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
         by_country = data.groupby("Country")["Amount"].sum()
         total = by_country.sum()
         if total <= 0:
-            return "N/A"
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
         top_country = by_country.idxmax()
         share = by_country.max() / total * 100
-        return f"{top_country} — {share:,.1f}%"
+        return ui.tags.div(
+            ui.tags.div(str(top_country), class_="kpi-subtitle"),
+            ui.tags.div(f"{share:,.1f}%", class_="kpi-main"),
+            class_="kpi-two-line",
+        )
 
     @reactive.calc
     def non_date_filtered_data():

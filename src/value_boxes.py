@@ -64,13 +64,13 @@ def value_boxes_ui():
     row3 = ui.layout_columns(
         ui.value_box(
             "Top Product Revenue Share",
-            ui.output_text("top_product_share"),
+            ui.output_ui("top_product_share"),
             showcase=icon_top_product,
             height="auto",
         ),
         ui.value_box(
             "Top Country Revenue Share",
-            ui.output_text("top_country_share"),
+            ui.output_ui("top_country_share"),
             showcase=icon_top_country,
             height="auto",
         ),

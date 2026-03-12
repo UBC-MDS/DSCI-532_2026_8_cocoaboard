@@ -4,7 +4,7 @@
 | #   | Job Story                                                                                                                                                   | Status         | Notes                                                              |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------ |
 | 1   | When I open the dashboard, I want to see KPI summary cards so I can get an at-a-glance overview of total revenue, average revenue, YoY growth, MoM growth, and how concentrated revenue is in the top product and country.     | ✅ Implemented | Top Product Revenue Share and Top Country Revenue Share cards added. |
-| 2   | When I apply date, country, or product filters, I want all metrics and charts to update simultaneously so I can analyze any specific segment quickly (including product-level analysis to identify best-sellers).        | ✅ Implemented | Revenue by Product pie chart added for product-level analysis.     |
+| 2   | When I apply date, country, or product filters, I want all metrics and charts to update simultaneously so I can analyze any specific segment quickly (including product-level analysis to identify best-sellers).        | ✅ Implemented | Revenue by Product area chart (horizontal bars) added for product-level analysis.     |
 | 3   | When I select a chocolate product or date range, I want to see a world map colored by country revenue so I can identify which markets are performing best.   | ✅ Implemented | The map is clickable: clicking a country toggles it in the Country filter. |
 | 4   | When I want to evaluate team performance, I want to see a ranked leaderboard of sales reps with revenue, transactions, boxes, avg deal size, and revenue share so I can spot top performers. | ✅ Implemented |                                                                    |
 | 5   | When I want to track sales momentum, I want to see a revenue trend line chart for the top 5 sales reps over time so I can identify trends and seasonality. | ✅ Implemented | Added in M3. Shows monthly revenue for top 5 reps by total revenue. |
@@ -32,7 +32,7 @@
 | `map_chart`           | Output        | `@render.ui` (Altair choropleth; clickable)     | `filtered_data`                                      | #2, #3     |
 | `leaderboard_table`   | Output        | `@render.data_frame`                 | `filtered_data`                                      | #2, #4     |
 | `revenue_trend_chart` | Output        | `@render.ui` (Altair line chart)     | `filtered_data`                                      | #2, #5     |
-| `product_revenue_chart` | Output      | `@render.ui` (Altair pie chart)       | `filtered_data`                                      | #2         |
+| `product_revenue_chart` | Output      | `@render.ui` (Altair bar chart)       | `filtered_data`                                      | #2         |
 
 #### Tab 2 — AI Chat Helper
 
@@ -120,13 +120,13 @@ flowchart TD
 
 - **Logic:** Groups by month, compares the last available month's total revenue to the prior month. Returns the percentage change with a +/− sign, or "N/A" if insufficient data.
 
-**`top_product_share`** (`@render.text`)
+**`top_product_share`** (`@render.ui`)
 
-- **Logic:** Aggregates `filtered_data` by product (`Amount` sum), finds the product with the highest revenue, and returns its share of total revenue as a percentage (e.g., "32.5%"). Shows how concentrated sales are in the single best-selling product for the current filters.
+- **Logic:** Aggregates `filtered_data` by product (`Amount` sum), finds the product with the highest revenue, and returns a two-line UI element where the product name appears above its share of total revenue as a percentage (e.g., product name in smaller grey text above "32.5%"). Shows how concentrated sales are in the single best-selling product for the current filters.
 
-**`top_country_share`** (`@render.text`)
+**`top_country_share`** (`@render.ui`)
 
-- **Logic:** Aggregates `filtered_data` by country (`Amount` sum), finds the country with the highest revenue, and returns its share of total revenue as a percentage. Highlights geographic concentration and risk in the current filtered segment.
+- **Logic:** Aggregates `filtered_data` by country (`Amount` sum), finds the country with the highest revenue, and returns a two-line UI element where the country name appears above its share of total revenue as a percentage. Highlights geographic concentration and risk in the current filtered segment.
 
 **Clickable map filtering** (`map_chart` in `map_chart.py` + server handler in `app.py`)
 
@@ -142,7 +142,7 @@ flowchart TD
 
 **`product_revenue_chart_ui`** (helper function in `product_revenue.py`)
 
-- **Logic:** Aggregates filtered data by product (sum of Amount), computes share of total revenue, and renders an Altair pie chart with tooltips (revenue and share %). Supports product-level analysis and best-seller identification after applying year, country, and product filters.
+- **Logic:** Aggregates filtered data by product (sum of Amount), computes share of total revenue, and renders a horizontal Altair bar (area) chart where bar length encodes revenue. Tooltips show revenue and share %. Supports product-level analysis and best-seller identification after applying year, country, and product filters.
 
 ### 2.5 Module Structure
 
@@ -157,7 +157,7 @@ The app follows a modular architecture where `app.py` is the single parent that 
 | `map_chart.py`      | Altair world choropleth map                                 |
 | `leaderboard.py`    | Sales rep leaderboard table with summary row                |
 | `revenue_trend.py`  | Revenue trend line chart for top 5 reps                     |
-| `product_revenue.py` | Revenue by product pie chart for product-level analysis    |
+| `product_revenue.py` | Revenue by product area/bar chart for product-level analysis    |
 | `query_chat.py`     | QueryChat AI integration and AI Chat tab layout             |
 | `theme.py`          | Chocolate-themed CSS and Bootstrap Icons head content       |
 | `constants.py`      | Shared constants                                            |
