@@ -3,9 +3,9 @@
 
 | #   | Job Story                                                                                                                                                   | Status         | Notes                                                              |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------ |
-| 1   | When I open the dashboard, I want to see KPI summary cards so I can get an at-a-glance overview of total revenue, boxes shipped, active sales reps, average revenue, YoY growth, and MoM growth.     | ✅ Implemented |                                                                    |
-| 2   | When I apply date, country, or product filters, I want all metrics and charts to update simultaneously so I can analyze any specific segment quickly.        | ✅ Implemented |                                                                    |
-| 3   | When I select a chocolate product or date range, I want to see a world map colored by country revenue so I can identify which markets are performing best.   | ✅ Implemented |                                                                    |
+| 1   | When I open the dashboard, I want to see KPI summary cards so I can get an at-a-glance overview of total revenue, average revenue, YoY growth, and MoM growth.     | ✅ Implemented |                                                                    |
+| 2   | When I apply date, country, or product filters, I want all metrics and charts to update simultaneously so I can analyze any specific segment quickly (including product-level analysis to identify best-sellers).        | ✅ Implemented | Revenue by Product pie chart added for product-level analysis.     |
+| 3   | When I select a chocolate product or date range, I want to see a world map colored by country revenue so I can identify which markets are performing best.   | ✅ Implemented | The map is clickable: clicking a country toggles it in the Country filter. |
 | 4   | When I want to evaluate team performance, I want to see a ranked leaderboard of sales reps with revenue, transactions, boxes, avg deal size, and revenue share so I can spot top performers. | ✅ Implemented |                                                                    |
 | 5   | When I want to track sales momentum, I want to see a revenue trend line chart for the top 5 sales reps over time so I can identify trends and seasonality. | ✅ Implemented | Added in M3. Shows monthly revenue for top 5 reps by total revenue. |
 | 6   | When I want to explore the data using natural language, I want an AI chat tab where I can ask questions and get filtered tables, maps, and downloadable CSVs. | ✅ Implemented | Implemented in M3: AI Chat Helper tab via QueryChat & requires `ANTHROPIC_API_KEY`. |
@@ -17,20 +17,20 @@
 
 | ID                    | Type          | Shiny widget / renderer              | Depends on                                           | Job story  |
 | --------------------- | ------------- | ------------------------------------ | ---------------------------------------------------- | ---------- |
+| `input_year`          | Input         | `ui.input_radio_buttons()`           | —                                                    | #1–#5      |
 | `input_date_range`    | Input         | `ui.input_date_range()`              | —                                                    | #1–#5      |
 | `input_country`       | Input         | `ui.input_selectize(multiple=True)`  | —                                                    | #2–#5      |
 | `input_product`       | Input         | `ui.input_selectize(multiple=True)`  | —                                                    | #2–#5      |
 | `filtered_data`       | Reactive calc | `@reactive.calc`                     | `input_date_range`, `input_country`, `input_product`  | #1–#5      |
 | `non_date_filtered_data` | Reactive calc | `@reactive.calc`                  | `input_country`, `input_product`                      | #1         |
 | `total_revenue`       | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
-| `total_boxes`         | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
-| `active_reps`         | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
 | `avg_revenue`         | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
 | `yoy_revenue`         | Output        | `@render.text`                       | `non_date_filtered_data`                             | #1         |
 | `mom_revenue`         | Output        | `@render.text`                       | `non_date_filtered_data`                             | #1         |
-| `map_chart`           | Output        | `@render.ui` (Altair choropleth)     | `filtered_data`                                      | #2, #3     |
+| `map_chart`           | Output        | `@render.ui` (Altair choropleth; clickable)     | `filtered_data`                                      | #2, #3     |
 | `leaderboard_table`   | Output        | `@render.data_frame`                 | `filtered_data`                                      | #2, #4     |
 | `revenue_trend_chart` | Output        | `@render.ui` (Altair line chart)     | `filtered_data`                                      | #2, #5     |
+| `product_revenue_chart` | Output      | `@render.ui` (Altair pie chart)       | `filtered_data`                                      | #2         |
 
 #### Tab 2 — AI Chat Helper
 
@@ -65,23 +65,21 @@ flowchart TD
 
   subgraph "Tab 1 Outputs"
     R([total_revenue])
-    T([total_boxes])
-    P([active_reps])
     AVG([avg_revenue])
     YOY([yoy_revenue])
     MOM([mom_revenue])
     M([map_chart])
     L([leaderboard_table])
     RT([revenue_trend_chart])
+    PR([product_revenue_chart])
   end
 
   F --> R
-  F --> T
-  F --> P
   F --> AVG
   F --> M
   F --> L
   F --> RT
+  F --> PR
   NDF --> YOY
   NDF --> MOM
 
@@ -100,7 +98,7 @@ flowchart TD
 
 - **Depends on:** `input_date_range`, `input_country`, `input_product`
 - **Transformation:** Copies the full dataset, restricts rows to the selected date window, then filters to the selected countries and/or products when any are chosen (empty selection = all).
-- **Consumed by:** `total_revenue`, `total_boxes`, `active_reps`, `avg_revenue`, `map_chart`, `leaderboard_table`, `revenue_trend_chart`
+- **Consumed by:** `total_revenue`, `avg_revenue`, `map_chart`, `leaderboard_table`, `revenue_trend_chart`, `product_revenue_chart`
 
 **`non_date_filtered_data`** (`@reactive.calc`)
 
@@ -116,6 +114,10 @@ flowchart TD
 
 - **Logic:** Groups by month, compares the last available month's total revenue to the prior month. Returns the percentage change with a +/− sign, or "N/A" if insufficient data.
 
+**Clickable map filtering** (`map_chart` in `map_chart.py` + server handler in `app.py`)
+
+- **Logic:** The choropleth map embeds a small JS click handler that posts the clicked country name to the Shiny app. The server listens for `map_clicked_country()` and updates `input_country` by toggling the clicked country (add if not selected, remove if already selected). This enables direct filtering by clicking countries on the map.
+
 **`leaderboard_table_data`** (helper function in `leaderboard.py`)
 
 - **Logic:** Groups by sales person, computes Revenue, Transactions, Boxes, Avg Deal, and Rev Share %. Ranks by descending revenue and appends an AVERAGE / TOTAL summary row.
@@ -123,6 +125,10 @@ flowchart TD
 **`revenue_trend_chart_ui`** (helper function in `revenue_trend.py`)
 
 - **Logic:** Identifies the top 5 sales reps by total revenue in the filtered data, aggregates their revenue by month, and renders an Altair multi-line chart with points and tooltips.
+
+**`product_revenue_chart_ui`** (helper function in `product_revenue.py`)
+
+- **Logic:** Aggregates filtered data by product (sum of Amount), computes share of total revenue, and renders an Altair pie chart with tooltips (revenue and share %). Supports product-level analysis and best-seller identification after applying year, country, and product filters.
 
 ### 2.5 Module Structure
 
@@ -137,6 +143,7 @@ The app follows a modular architecture where `app.py` is the single parent that 
 | `map_chart.py`      | Altair world choropleth map                                 |
 | `leaderboard.py`    | Sales rep leaderboard table with summary row                |
 | `revenue_trend.py`  | Revenue trend line chart for top 5 reps                     |
+| `product_revenue.py` | Revenue by product pie chart for product-level analysis    |
 | `query_chat.py`     | QueryChat AI integration and AI Chat tab layout             |
 | `theme.py`          | Chocolate-themed CSS and Bootstrap Icons head content       |
 | `constants.py`      | Shared constants                                            |
