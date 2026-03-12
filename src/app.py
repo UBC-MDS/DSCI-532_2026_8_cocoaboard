@@ -435,6 +435,22 @@ def server(input, output, session):
         return country_choropleth_ui(
             qc_vals.df(), COUNTRY_CODES, WORLD_TOPO_URL, 280, "400px"
         )
+    
+    @render.ui
+    def ai_map_chart():
+        return country_choropleth_ui(
+            qc_vals.df(), COUNTRY_CODES, WORLD_TOPO_URL, 280, "400px"
+        )
+
+    def ai_product_revenue_chart():
+        return product_revenue_chart_ui(qc_vals.df())
+
+    @render.data_frame
+    def ai_leaderboard_table():
+        return leaderboard_table_data(qc_vals.df())
+
+
+app = App(app_ui, server)
 
 
 app = App(app_ui, server)
