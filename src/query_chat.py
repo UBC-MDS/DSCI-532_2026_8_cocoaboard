@@ -72,25 +72,22 @@ def ai_chat_panel_ui(qc):
                 ),
                 style="padding: 0.5rem;",
             ),
-            ui.tags.div(
-                ui.layout_columns(
-                    ui.card(
-                        ui.card_header("Revenue by Country"),
-                        ui.output_ui("ai_map_chart"),
-                        full_screen=True,
-                    ),
-                    ui.card(
-                        ui.card_header("Revenue by Product"),
-                        ui.output_ui("ai_product_revenue_chart"),
-                        full_screen=True,
-                    ),
-                    col_widths=(6, 6),
+            ui.layout_columns(
+                ui.card(
+                    ui.card_header("Revenue by Country"),
+                    ui.output_ui("ai_map_chart"),
+                    full_screen=True,
                 ),
-                class_="ai-charts-row",
+                ui.card(
+                    ui.card_header("Top 5 Sales Reps"),
+                    ui.output_ui("ai_revenue_trend_chart"),
+                    full_screen=True,
+                ),
+                col_widths=(6, 6),
             ),
             ui.card(
-                ui.card_header("Top 5 Sales Reps"),
-                ui.output_ui("ai_revenue_trend_chart"),
+                ui.card_header("Revenue by Product"),
+                ui.output_ui("ai_product_revenue_chart"),
                 full_screen=True,
             ),
             ui.card(
