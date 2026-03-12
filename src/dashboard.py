@@ -9,6 +9,7 @@ try:
     from .map_chart import map_chart_ui
     from .leaderboard import leaderboard_ui
     from .revenue_trend import revenue_trend_ui
+    from .product_revenue import product_revenue_ui
     from .footer import footer_ui
 except ImportError:
     from filters import filters_sidebar_ui
@@ -16,6 +17,7 @@ except ImportError:
     from map_chart import map_chart_ui
     from leaderboard import leaderboard_ui
     from revenue_trend import revenue_trend_ui
+    from product_revenue import product_revenue_ui
     from footer import footer_ui
 
 
@@ -39,7 +41,11 @@ def dashboard_panel_ui(
         open="open",
     )
     main_content = ui.tags.div(
-        value_boxes_ui(),
+        ui.layout_columns(
+            ui.tags.div(value_boxes_ui()),
+            ui.tags.div(product_revenue_ui()),
+            col_widths=(8, 4),
+        ),
         ui.layout_columns(
             ui.tags.div(map_chart_ui()),
             ui.tags.div(revenue_trend_ui()),

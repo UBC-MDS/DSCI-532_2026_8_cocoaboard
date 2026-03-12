@@ -30,6 +30,7 @@ if __package__ and __package__ != "__main__":
     from .leaderboard import leaderboard_table_data
     from .revenue_trend import revenue_trend_chart_ui
     from .map_chart import country_choropleth_ui
+    from .product_revenue import product_revenue_chart_ui
     from .kpi_calculations import compute_yoy_revenue, compute_mom_revenue
 else:
     from theme import get_head_content
@@ -39,6 +40,7 @@ else:
     from leaderboard import leaderboard_table_data
     from revenue_trend import revenue_trend_chart_ui
     from map_chart import country_choropleth_ui
+    from product_revenue import product_revenue_chart_ui
     from kpi_calculations import compute_yoy_revenue, compute_mom_revenue
 
 # -- Load data via DuckDB (lazy) -----------------------------------------------
@@ -149,14 +151,6 @@ def server(input, output, session):
         return f"${filtered_data()['Amount'].sum():,.0f}"
 
     @render.text
-    def total_boxes():
-        return f"{filtered_data()['Boxes Shipped'].sum():,}"
-
-    @render.text
-    def active_reps():
-        return str(filtered_data()["Sales Person"].nunique())
-
-    @render.text
     def avg_revenue():
         data = filtered_data()
         if data.empty:
@@ -211,6 +205,10 @@ def server(input, output, session):
     @render.ui
     def revenue_trend_chart():
         return revenue_trend_chart_ui(filtered_data())
+
+    @render.ui
+    def product_revenue_chart():
+        return product_revenue_chart_ui(filtered_data())
 
     @reactive.effect
     @reactive.event(input.clear_selections)
