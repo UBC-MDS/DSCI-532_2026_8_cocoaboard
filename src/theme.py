@@ -298,6 +298,30 @@ h1, h2, h3, h4, .card-header {
 .year-buttons .form-check-label:hover {
   border-color: var(--chocolate-medium);
 }
+.navbar-brand-wrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.navbar-brand-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--chocolate-dark);
+}
+.navbar-description {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--chocolate-medium);
+  opacity: 0.85;
+  max-width: 600px;
+  white-space: normal;
+  line-height: 1.3;
+}
+@media (max-width: 768px) {
+  .navbar-description {
+    display: none;
+  }
+}
 """
 
 

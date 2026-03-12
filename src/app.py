@@ -101,7 +101,14 @@ app_ui = ui.page_navbar(
         "AI Chat Helper",
         ai_chat_panel_ui(qc),
     ),
-    title="CocoaBoard",
+    title=ui.tags.div(
+        ui.tags.span("CocoaBoard", class_="navbar-brand-title"),
+        ui.tags.span(
+            "Explore global chocolate sales by country, product, and sales rep: track revenue KPIs, compare performance, and uncover insights to improve sales strategies.",
+            class_="navbar-description",
+        ),
+        class_="navbar-brand-wrapper",
+    ),
     header=get_head_content(),
     fillable=True,
 )
