@@ -47,13 +47,13 @@ def value_boxes_ui():
     row2 = ui.layout_columns(
         ui.value_box(
             "Year-over-Year Revenue",
-            ui.output_text("yoy_revenue"),
+            ui.output_ui("yoy_revenue"),
             showcase=icon_yoy,
             height="auto",
         ),
         ui.value_box(
             "Month-over-Month Revenue",
-            ui.output_text("mom_revenue"),
+            ui.output_ui("mom_revenue"),
             showcase=icon_mom,
             height="auto",
         ),

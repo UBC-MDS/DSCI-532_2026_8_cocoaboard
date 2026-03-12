@@ -31,7 +31,10 @@ if __package__ and __package__ != "__main__":
     from .revenue_trend import revenue_trend_chart_ui
     from .map_chart import country_choropleth_ui
     from .product_revenue import product_revenue_chart_ui
-    from .kpi_calculations import compute_yoy_revenue, compute_mom_revenue
+    from .kpi_calculations import (
+        compute_yoy_badges_data,
+        compute_mom_badges_data,
+    )
 else:
     from theme import get_head_content
     from constants import COUNTRY_CODES, WORLD_TOPO_URL
@@ -41,7 +44,10 @@ else:
     from revenue_trend import revenue_trend_chart_ui
     from map_chart import country_choropleth_ui
     from product_revenue import product_revenue_chart_ui
-    from kpi_calculations import compute_yoy_revenue, compute_mom_revenue
+    from kpi_calculations import (
+        compute_yoy_badges_data,
+        compute_mom_badges_data,
+    )
 
 # -- Load data via DuckDB (lazy) -----------------------------------------------
 con = ibis.duckdb.connect()
@@ -217,15 +223,116 @@ def server(input, output, session):
             query = query.filter(t["Product"].isin(input.product()))
         return query.to_pandas()
 
-    @render.text
+    @render.ui
     def yoy_revenue():
-        selected_year = input.year()
-        year = int(selected_year) if selected_year and selected_year != "All" else None
-        return compute_yoy_revenue(non_date_filtered_data(), year=year)
+        data = non_date_filtered_data()
+        if data.empty:
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
 
-    @render.text
+        badge_data = compute_yoy_badges_data(data, max_years=3)
+        if not badge_data:
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
+
+        yoy_badges = []
+
+        for entry in badge_data:
+            year = entry["year"]
+            pct = entry["pct"]
+            direction = entry["direction"]
+
+            if pct is None or direction == "neutral":
+                badge = ui.tags.span(
+                    f"{year} N/A", class_="kpi-badge kpi-badge-neutral"
+                )
+            else:
+                arrow = "+" if pct >= 0 else "-"
+                pct_abs = abs(pct)
+                cls = (
+                    "kpi-badge kpi-badge-positive"
+                    if direction == "positive"
+                    else "kpi-badge kpi-badge-negative"
+                )
+                badge = ui.tags.span(
+                    f"{year} {arrow}{pct_abs:.1f}%", class_=cls
+                )
+
+            yoy_badges.append(badge)
+
+        if not yoy_badges:
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
+
+        return ui.tags.div(
+            ui.tags.div(
+                "Last 3 years vs prior year", class_="kpi-subtitle"
+            ),
+            ui.tags.div(*yoy_badges, class_="kpi-badges"),
+            class_="kpi-two-line",
+        )
+
+    @render.ui
     def mom_revenue():
-        return compute_mom_revenue(non_date_filtered_data())
+        data = non_date_filtered_data()
+        if data.empty:
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
+
+        badge_data = compute_mom_badges_data(data, max_months=3)
+        if not badge_data:
+            return ui.tags.div(
+                ui.tags.div("No data", class_="kpi-subtitle"),
+                ui.tags.div("N/A", class_="kpi-main"),
+                class_="kpi-two-line",
+            )
+
+        mom_badges = []
+
+        for entry in badge_data:
+            label = entry["label"]
+            pct = entry["pct"]
+            direction = entry["direction"]
+
+            if pct is None or direction == "neutral":
+                badge = ui.tags.span(
+                    f"{label} N/A",
+                    class_="kpi-badge kpi-badge-neutral",
+                )
+            else:
+                arrow = "+" if pct >= 0 else "-"
+                pct_abs = abs(pct)
+                cls = (
+                    "kpi-badge kpi-badge-positive"
+                    if direction == "positive"
+                    else "kpi-badge kpi-badge-negative"
+                )
+                badge = ui.tags.span(
+                    f"{label} {arrow}{pct_abs:.1f}%",
+                    class_=cls,
+                )
+
+            mom_badges.append(badge)
+
+        return ui.tags.div(
+            ui.tags.div(
+                "Last 3 months vs prior month", class_="kpi-subtitle"
+            ),
+            ui.tags.div(*mom_badges, class_="kpi-badges"),
+            class_="kpi-two-line",
+        )
 
     @render.ui
     def map_chart():

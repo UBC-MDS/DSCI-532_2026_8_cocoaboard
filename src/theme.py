@@ -129,6 +129,40 @@ h1, h2, h3, h4, .card-header {
   font-size: 1.2rem;
   font-weight: 600;
 }
+
+/* KPI badges for YoY/MoM breakdowns */
+.kpi-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.kpi-badge {
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.kpi-badge-positive {
+  background-color: rgba(46, 204, 113, 0.15);
+  border-color: rgba(46, 204, 113, 0.4);
+  color: #1e7e34;
+}
+
+.kpi-badge-negative {
+  background-color: rgba(231, 76, 60, 0.15);
+  border-color: rgba(231, 76, 60, 0.4);
+  color: #c0392b;
+}
+
+.kpi-badge-neutral {
+  background-color: rgba(108, 117, 125, 0.15);
+  border-color: rgba(108, 117, 125, 0.4);
+  color: #6c757d;
+}
 /* Page fillable: let content determine height */
 .shiny-fill-container {
   min-height: 0 !important;

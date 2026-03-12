@@ -25,10 +25,10 @@
 | `non_date_filtered_data` | Reactive calc | `@reactive.calc`                  | `input_country`, `input_product`                      | #1         |
 | `total_revenue`       | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
 | `avg_revenue`         | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
-| `top_product_share`   | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
-| `top_country_share`   | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
-| `yoy_revenue`         | Output        | `@render.text`                       | `non_date_filtered_data`                             | #1         |
-| `mom_revenue`         | Output        | `@render.text`                       | `non_date_filtered_data`                             | #1         |
+| `top_product_share`   | Output        | `@render.ui`                         | `filtered_data`                                      | #1, #2     |
+| `top_country_share`   | Output        | `@render.ui`                         | `filtered_data`                                      | #1, #2     |
+| `yoy_revenue`         | Output        | `@render.ui`                         | `non_date_filtered_data`                             | #1         |
+| `mom_revenue`         | Output        | `@render.ui`                         | `non_date_filtered_data`                             | #1         |
 | `map_chart`           | Output        | `@render.ui` (Altair choropleth; clickable)     | `filtered_data`                                      | #2, #3     |
 | `leaderboard_table`   | Output        | `@render.data_frame`                 | `filtered_data`                                      | #2, #4     |
 | `revenue_trend_chart` | Output        | `@render.ui` (Altair line chart)     | `filtered_data`                                      | #2, #5     |
@@ -112,13 +112,13 @@ flowchart TD
 - **Transformation:** Copies the full dataset and applies country and product filters only (ignores date range). This ensures YoY and MoM comparisons always use the full time span of the data.
 - **Consumed by:** `yoy_revenue`, `mom_revenue`
 
-**`yoy_revenue`** (`@render.text`)
+**`yoy_revenue`** (`@render.ui`)
 
-- **Logic:** Groups by month, compares the latest year's revenue (up to the last available month) against the same months of the prior year. Returns the percentage change with a +/− sign, or "N/A" if insufficient data.
+-- **Logic:** Uses `non_date_filtered_data` and `compute_yoy_badges_data` (in `kpi_calculations.py`) to aggregate revenue by month and compute year-over-year changes for up to the three most recent years. Renders a subtitle plus a row of HTML badges, one per year (e.g., `2022 +30.0% 2023 -20.0% 2024 +5.0%`), where positive changes appear as green badges, negative changes as red badges, and missing/undefined values as neutral `N/A` badges.
 
-**`mom_revenue`** (`@render.text`)
+**`mom_revenue`** (`@render.ui`)
 
-- **Logic:** Groups by month, compares the last available month's total revenue to the prior month. Returns the percentage change with a +/− sign, or "N/A" if insufficient data.
+- **Logic:** Uses `non_date_filtered_data` and `compute_mom_badges_data` (in `kpi_calculations.py`) to aggregate revenue by month and compute month-over-month changes for the last three months that have a preceding month. Renders a subtitle plus a row of HTML badges labeled by month (e.g., `Feb 2024 +8.5%  Mar 2024 -3.2%  Apr 2024 +5.0%`) with the same green/red/neutral color scheme as YoY.
 
 **`top_product_share`** (`@render.ui`)
 
@@ -158,6 +158,7 @@ The app follows a modular architecture where `app.py` is the single parent that 
 | `leaderboard.py`    | Sales rep leaderboard table with summary row                |
 | `revenue_trend.py`  | Revenue trend line chart for top 5 reps                     |
 | `product_revenue.py` | Revenue by product area/bar chart for product-level analysis    |
+| `kpi_calculations.py` | KPI math for YoY/MoM percentages and structured badge data |
 | `query_chat.py`     | QueryChat AI integration and AI Chat tab layout             |
 | `theme.py`          | Chocolate-themed CSS and Bootstrap Icons head content       |
 | `constants.py`      | Shared constants                                            |
