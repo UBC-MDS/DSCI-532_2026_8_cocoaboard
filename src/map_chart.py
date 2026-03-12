@@ -71,12 +71,14 @@ def country_choropleth_ui(
         .project("naturalEarth1")
         .properties(width="container", height=chart_height)
     )
-    min_amount = float(country_sales["Amount"].min())
     max_amount = float(country_sales["Amount"].max())
     fixed_color = alt.Color(
         "Amount:Q",
-        scale=alt.Scale(scheme="oranges", domain=[min_amount, max_amount]),
-        legend=alt.Legend(title="Revenue (USD)"),
+        scale=alt.Scale(scheme="oranges", domain=[0, max_amount]),
+        legend=alt.Legend(
+            title="Revenue (USD)",
+            labelExpr="'$' + format(datum.value / 1000, ',.0f') + 'K'",
+        ),
     )
     sales_layer = (
         alt.Chart(topo)
