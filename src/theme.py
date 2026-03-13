@@ -322,6 +322,11 @@ h1, h2, h3, h4, .card-header {
     display: none;
   }
 }
+.querychat-update-dashboard-btn {
+  display: block;
+  margin-top: 0.5rem;
+  clear: both;
+}
 """
 
 
