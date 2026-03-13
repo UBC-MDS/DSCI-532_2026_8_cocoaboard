@@ -64,6 +64,14 @@ def ai_chat_panel_ui(qc):
     return ui.layout_sidebar(
         qc.sidebar(),
         ui.tags.div(
+             ui.card(
+                ui.download_button(
+                    "download_ai_data",
+                    "Download Filtered Data",
+                    class_="btn-sm",
+                ),
+                style="padding: 0.5rem;",
+            ),
             ui.layout_columns(
                 ui.card(
                     ui.card_header("Revenue by Country"),
@@ -71,19 +79,16 @@ def ai_chat_panel_ui(qc):
                     full_screen=True,
                 ),
                 ui.card(
-                    ui.card_header("Top Sales Reps"),
-                    ui.output_ui("ai_leaderboard_chart"),
+                    ui.card_header("Top 5 Sales Reps"),
+                    ui.output_ui("ai_revenue_trend_chart"),
                     full_screen=True,
                 ),
                 col_widths=(6, 6),
             ),
             ui.card(
-                ui.download_button(
-                    "download_ai_data",
-                    "Download Filtered Data",
-                    class_="btn-sm",
-                ),
-                style="padding: 0.5rem;",
+                ui.card_header("Revenue by Product"),
+                ui.output_ui("ai_product_revenue_chart"),
+                full_screen=True,
             ),
             ui.card(
                 ui.card_header(ui.output_text("ai_chat_title")),

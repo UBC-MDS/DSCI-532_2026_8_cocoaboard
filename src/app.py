@@ -429,12 +429,19 @@ def server(input, output, session):
     @render.download(filename="filtered_chocolate_sales.csv")
     def download_ai_data():
         yield qc_vals.df().to_csv(index=False)
-
+    
     @render.ui
     def ai_map_chart():
         return country_choropleth_ui(
             qc_vals.df(), COUNTRY_CODES, WORLD_TOPO_URL, 280, "400px"
         )
 
+    @render.ui
+    def ai_product_revenue_chart():
+        return product_revenue_chart_ui(qc_vals.df())
+    
+    @render.ui
+    def ai_revenue_trend_chart():
+        return revenue_trend_chart_ui(qc_vals.df())
 
 app = App(app_ui, server)
