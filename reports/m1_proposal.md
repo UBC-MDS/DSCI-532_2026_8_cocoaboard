@@ -93,7 +93,7 @@ This comparison helps the director make informed decisions about inventory alloc
 
 ## Section 5: App Sketch & Description
 
-![Dashboard sketch](../img/updated_sketch.png)
+![Dashboard sketch](/img/updated_sketch.png)
 
 The dashboard uses a **sidebar + main content layout** with a navbar showing the app title and a one-line description of its purpose.
 
