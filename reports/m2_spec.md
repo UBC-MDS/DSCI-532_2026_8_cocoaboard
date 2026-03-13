@@ -5,10 +5,11 @@
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------ |
 | 1   | When I open the dashboard, I want to see KPI summary cards so I can get an at-a-glance overview of total revenue, average revenue, YoY growth, MoM growth, and how concentrated revenue is in the top product and country.     | ✅ Implemented | Top Product Revenue Share and Top Country Revenue Share cards added. |
 | 2   | When I apply date, country, or product filters, I want all metrics and charts to update simultaneously so I can analyze any specific segment quickly (including product-level analysis to identify best-sellers).        | ✅ Implemented | Revenue by Product area chart (horizontal bars) added for product-level analysis.     |
-| 3   | When I select a chocolate product or date range, I want to see a world map colored by country revenue so I can identify which markets are performing best.   | ✅ Implemented | The map is clickable: clicking a country toggles it in the Country filter. |
+| 3   | When I select a chocolate product or date range, I want to see a world map colored by country revenue so I can identify which markets are performing best.   | ✅ Implemented | The map is clickable: clicking a country toggles it in the Country filter (M4 Advanced Feature — Option D).|
 | 4   | When I want to evaluate team performance, I want to see a ranked leaderboard of sales reps with revenue, transactions, boxes, avg deal size, and revenue share so I can spot top performers. | ✅ Implemented |                                                                    |
 | 5   | When I want to track sales momentum, I want to see a revenue trend line chart for the top 5 sales reps over time so I can identify trends and seasonality. | ✅ Implemented | Added in M3. Shows monthly revenue for top 5 reps by total revenue. |
 | 6   | When I want to explore the data using natural language, I want an AI chat tab where I can ask questions and get filtered tables, maps, and downloadable CSVs. | ✅ Implemented | Implemented in M3: AI Chat Helper tab via QueryChat & requires `ANTHROPIC_API_KEY`. |
+| 7   | When I click a country on the map, I want the dashboard to filter all metrics and charts to that country so I can drill down into a market without using the sidebar filter. | ✅ Implemented | M4 Advanced Feature (Option D). Click toggles country in/out of the selectize filter; all outputs react via `filtered_data`. |
 
 
 ### 2.2 Component Inventory
@@ -21,6 +22,7 @@
 | `input_date_range`    | Input         | `ui.input_date_range()`              | —                                                    | #1–#5      |
 | `input_country`       | Input         | `ui.input_selectize(multiple=True)`  | —                                                    | #2–#5      |
 | `input_product`       | Input         | `ui.input_selectize(multiple=True)`  | —                                                    | #2–#5      |
+| `map_clicked_country` | Input         | JS `postMessage` → `Shiny.setInputValue` | `map_chart` (click event)                        | #3, #7     |
 | `filtered_data`       | Reactive calc | `@reactive.calc`                     | `input_date_range`, `input_country`, `input_product`  | #1–#5      |
 | `non_date_filtered_data` | Reactive calc | `@reactive.calc`                  | `input_country`, `input_product`                      | #1         |
 | `total_revenue`       | Output        | `@render.text`                       | `filtered_data`                                      | #1, #2     |
@@ -29,20 +31,22 @@
 | `top_country_share`   | Output        | `@render.ui`                         | `filtered_data`                                      | #1, #2     |
 | `yoy_revenue`         | Output        | `@render.ui`                         | `non_date_filtered_data`                             | #1         |
 | `mom_revenue`         | Output        | `@render.ui`                         | `non_date_filtered_data`                             | #1         |
-| `map_chart`           | Output        | `@render.ui` (Altair choropleth; clickable)     | `filtered_data`                                      | #2, #3     |
+| `map_chart`           | Output        | `@render.ui` (Altair choropleth; clickable)     | `map_data`, `input_country` (for highlight) | #2, #3, #7 | 
 | `leaderboard_table`   | Output        | `@render.data_frame`                 | `filtered_data`                                      | #2, #4     |
 | `revenue_trend_chart` | Output        | `@render.ui` (Altair line chart)     | `filtered_data`                                      | #2, #5     |
 | `product_revenue_chart` | Output      | `@render.ui` (Altair bar chart)       | `filtered_data`                                      | #2         |
 
 #### Tab 2 — AI Chat Helper
 
-| ID                    | Type          | Shiny widget / renderer              | Depends on                                           | Job story  |
-| --------------------- | ------------- | ------------------------------------ | ---------------------------------------------------- | ---------- |
-| QueryChat sidebar     | Input         | `qc.sidebar()` (querychat)           | —                                                    | #6         |
-| `ai_chat_title`       | Output        | `@render.text`                       | `qc_vals.title()`                                    | #6         |
-| `ai_chat_table`       | Output        | `@render.data_frame`                 | `qc_vals.df()`                                       | #6         |
-| `ai_map_chart`        | Output        | `@render.ui` (Altair choropleth)     | `qc_vals.df()`                                       | #6         |
-| `download_ai_data`    | Output        | `@render.download`                   | `qc_vals.df()`                                       | #6         |
+| ID                        | Type          | Shiny widget / renderer              | Depends on                                           | Job story  |
+| ------------------------- | ------------- | ------------------------------------ | ---------------------------------------------------- | ---------- |
+| QueryChat sidebar         | Input         | `qc.sidebar()` (querychat)           | —                                                    | #6         |
+| `ai_chat_title`           | Output        | `@render.text`                       | `qc_vals.title()`                                    | #6         |
+| `ai_chat_table`           | Output        | `@render.data_frame`                 | `qc_vals.df()`                                       | #6         |
+| `ai_map_chart`            | Output        | `@render.ui` (Altair choropleth)     | `qc_vals.df()`                                       | #6         |
+| `ai_product_revenue_chart`| Output        | `@render.ui` (Altair bar chart)      | `qc_vals.df()`                                       | #6         |
+| `ai_revenue_trend_chart`  | Output        | `@render.ui` (Altair line chart)     | `qc_vals.df()`                                       | #6         |
+| `download_ai_data`        | Output        | `@render.download`                   | `qc_vals.df()`                                       | #6         |
 
 ### 2.3 Reactivity Diagram
 
@@ -52,11 +56,13 @@ flowchart TD
     A[/input_date_range/]
     B[/input_country/]
     C[/input_product/]
+    MC[/map_clicked_country/]
   end
 
   subgraph "Reactive Calcs"
     F{{filtered_data}}
     NDF{{non_date_filtered_data}}
+    MD{{map_data}}
   end
 
   A --> F
@@ -64,6 +70,8 @@ flowchart TD
   C --> F
   B --> NDF
   C --> NDF
+  A --> MD
+  C --> MD
 
   subgraph "Tab 1 Outputs"
     R([total_revenue])
@@ -88,12 +96,19 @@ flowchart TD
   F --> PR
   NDF --> YOY
   NDF --> MOM
+  MD --> M
+
+  %% Option D: map click interaction loop
+  M -- "JS postMessage on click" --> MC
+  MC -- "toggles country in selectize" --> B
 
   subgraph "Tab 2 — AI Chat"
     QC{{QueryChat / qc_vals}}
     QC --> AT([ai_chat_title])
     QC --> ATBL([ai_chat_table])
     QC --> AM([ai_map_chart])
+    QC --> APR([ai_product_revenue_chart])
+    QC --> ART([ai_revenue_trend_chart])
     QC --> DL([download_ai_data])
   end
 ```
@@ -112,6 +127,12 @@ flowchart TD
 - **Transformation:** Copies the full dataset and applies country and product filters only (ignores date range). This ensures YoY and MoM comparisons always use the full time span of the data.
 - **Consumed by:** `yoy_revenue`, `mom_revenue`
 
+**`map_data`** (`@reactive.calc`)
+
+- **Depends on:** `input_date_range`, `input_product`
+- **Transformation:** Applies date and product filters but intentionally excludes the country filter. This keeps all countries visible and clickable on the map regardless of which countries are selected in the sidebar.
+- **Consumed by:** `map_chart`
+
 **`yoy_revenue`** (`@render.ui`)
 
 -- **Logic:** Uses `non_date_filtered_data` and `compute_yoy_badges_data` (in `kpi_calculations.py`) to aggregate revenue by month and compute year-over-year changes for up to the three most recent years. Renders a subtitle plus a row of HTML badges, one per year (e.g., `2022 +30.0% 2023 -20.0% 2024 +5.0%`), where positive changes appear as green badges, negative changes as red badges, and missing/undefined values as neutral `N/A` badges.
@@ -128,9 +149,12 @@ flowchart TD
 
 - **Logic:** Aggregates `filtered_data` by country (`Amount` sum), finds the country with the highest revenue, and returns a two-line UI element where the country name appears above its share of total revenue as a percentage. Highlights geographic concentration and risk in the current filtered segment.
 
-**Clickable map filtering** (`map_chart` in `map_chart.py` + server handler in `app.py`)
+**Clickable map filtering — Advanced Feature Option D** (`map_chart.py` + `app.py`)
 
-- **Logic:** The choropleth map embeds a small JS click handler that posts the clicked country name to the Shiny app. The server listens for `map_clicked_country()` and updates `input_country` by toggling the clicked country (add if not selected, remove if already selected). This enables direct filtering by clicking countries on the map.
+- **Trigger:** User clicks a country on the choropleth map.
+- **JS layer:** The Altair chart HTML is patched by `_inject_click_handler()` to override `vegaEmbed`. On click, if the clicked datum has a `Country` property, the handler sends `{type: 'cocoa_map_click', country: '<name>'}` to the parent frame via `window.parent.postMessage`.
+- **Shiny listener:** A `<script>` in the page header (via `theme.py`) listens for the `cocoa_map_click` message and calls `Shiny.setInputValue('map_clicked_country', country, {priority: 'event'})`.
+- **Server handler (`_on_map_country_click`):** Reads `input.map_clicked_country()`, toggles the country in/out of the current `input.country()` selection, and calls `ui.update_selectize("country", selected=updated)`.
 
 **`leaderboard_table_data`** (helper function in `leaderboard.py`)
 
