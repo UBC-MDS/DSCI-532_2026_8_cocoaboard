@@ -4,7 +4,7 @@ A dashboard for exploring chocolate sales data by sales person, country, product
 
 ## Demo
 
-![Demo](img/demo.gif)
+![Demo](img/updated_demo.gif)
 
 ## What This Dashboard Does
 
