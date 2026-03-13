@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.4.0] - YYYY-MM-DD
+## [0.4.0] - 2026-03-12
 
 Closes [#65](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/65). Release tracked in [#66](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/66).
 
@@ -9,31 +9,44 @@ Closes [#65](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/65). R
 - Default date range start set to **1 January of the latest year** in the data, so the filter opens with a full-year view (e.g. 2025-01-01 → latest date) instead of the full dataset range. ([#62](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/62))
 - `.env.example` for AI Chat: copy to `.env` and set `ANTHROPIC_API_KEY` to enable the AI Chat tab; see [README](README.md) and [CONTRIBUTING](CONTRIBUTING.md#code-and-project-structure).
 - [CONTRIBUTING](CONTRIBUTING.md): M3 collaboration retrospective, M4 norms, and guidelines for adding new components with **modularity** (see [Code and project structure](CONTRIBUTING.md#code-and-project-structure)). ([#64](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/64))
+- **Dashboard description subtitle** under the CocoaBoard navbar title, giving users immediate context on the dashboard's purpose and use cases. ([#87](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/87))
+- **AI Chat tab: Revenue by Product chart** (`ai_product_revenue_chart`) — reuses the horizontal bar chart from Tab 1, driven by the AI-filtered DataFrame. ([#106](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/106))
+- **AI Chat tab: Revenue Trend chart** (`ai_revenue_trend_chart`) — top 5 sales reps line chart now also appears in the AI tab, responding to querychat-filtered data. ([#106](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/106))
+- **AI Chat tab: improved `DATA_DESCRIPTION`** with explicit column types and a CTE/`ROW_NUMBER()` hint so Haiku correctly handles "top N" queries without the unsupported `LIMIT` clause. ([#102](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/102))
+- **AI Chat tab: expanded suggested prompts** aligned to job stories — added "Show transactions over $10,000" and "Compare revenue between UK and USA". ([#102](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/102))
+- **Spec updated** (`reports/m2_spec.md`): new Job Story #4 (map click interaction), `map_clicked_country` input and `map_data` calc in component inventory, click loop in reactivity diagram, three new AI tab outputs. ([#86](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/86))
 
 ### Changed
 
 - Date filter default: **start** is now 1 Jan of the max year; **end** remains the latest date. Bounds (min/max) still allow the full data range. ([#62](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/62))
 - CONTRIBUTING expanded with “M3 retrospective and M4 norms” and a clear rule that **`app.py` is the parent** and new widgets/components live in dedicated modules (e.g. `filters.py`, `value_boxes.py`, `query_chat.py`) and are composed in `app.py`. ([#61](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/61))
 - Addressed: modularity refactoring ([#61](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/61)); date range limits and default ([#62](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/62)).
+- AI Chat tab layout reordered: download button moved to top, Revenue by Country and Revenue by Product side by side, Revenue Trend chart below, data table at bottom. ([#102](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/102))
+- AI Chat tab: replaced broken `ai_leaderboard_chart` (missing server function) with `ai_revenue_trend_chart` showing top 5 sales reps over time. ([#102](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/102))
+- Product revenue chart iframe height changed from 350px to 400px to align with the map chart in the AI tab. ([#102](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/102))
 
 ### Fixed
 
-- <!-- Bugs resolved since M3. -->
-
-- **Feedback prioritization issue link:** (none this release)
+- AI Chat tab: "Top Sales Reps" card was blank because the UI referenced `output_ui("ai_leaderboard_chart")` but no matching server function existed. Replaced with `ai_revenue_trend_chart` using `@render.ui` and `revenue_trend_chart_ui()`.
+- AI Chat tab: "Revenue by Product" card was blank because `ai_product_revenue_chart` was missing its `@render.ui` decorator — Shiny never registered it as an output.
+- AI Chat tab: "Show top 10 transactions by amount" prompt failed because querychat's SQL engine does not support `LIMIT`. Added CTE/`ROW_NUMBER()` pattern to `DATA_DESCRIPTION` so Haiku uses the supported workaround.
+- **Feedback prioritization issue link:** [(#71)](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/71)
 
 ### Known Issues
 
 - AI Chat tab requires `ANTHROPIC_API_KEY`; without it the tab shows a disabled message. On Posit Connect, set the env var in the deployment settings.
 
-### Release Highlight: [Name of your advanced feature]
+### Release Highlight: Clickable Map Filtering
 
-<!-- One short paragraph describing what you built and what it does for the user. -->
+Users can now click any country on the choropleth map to instantly filter the entire dashboard to that market. Clicking toggles the country in/out of the sidebar filter: all KPIs, the leaderboard, revenue trend, and product chart update immediately. 
 
-- **Option chosen:** A / B / C / D
-- **PR:** #...
-- **Why this option over the others:** <!-- 1–2 sentences; link to your feature prioritization issue -->
-- **Feature prioritization issue link:** #...
+Selected countries are highlighted in orange while unselected ones dim to grey, giving clear visual feedback. This makes geographic exploration feel natural (e.g. drill into Australia with one click, add India with another, and click either again to remove it).
+
+- **Option chosen:** D
+- **PR:** [#84](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/pull/84)
+- **Why this option over the others:** 
+Option D directly improves the primary dashboard experience where all users spend most of their time. The choropleth map is the most visually prominent component, and enabling click-to-filter turns a passive visualization into an interactive control. For example, A sales manager can drill into a market with one click instead of scrolling to the sidebar. Option A (QueryChat customization) and Option C (RAG) would only benefit users of the AI tab, which is a secondary feature that also requires an API key. Option B (persistent logging) adds backend infrastructure that is valuable for long-term monitoring but delivers no immediate UX improvement to end users. Since our job stories center on quick segment comparison and geographic performance analysis, making the map interactive had the highest impact-to-effort ratio and aligned most closely with our users' core workflow.
+- **Feedback prioritization issue link:** [#69](https://github.com/UBC-MDS/DSCI-532_2026_8_cocoaboard/issues/69)
 
 ### Collaboration
 
@@ -45,13 +58,15 @@ Summary of workflow and documentation improvements for M4: CHANGELOG and CONTRIB
 
 ### Reflection
 
-<!-- Standard (see General Guidelines): what the dashboard does well, current limitations,
-     any intentional deviations from DSCI 531 visualization best practices. -->
+**What the dashboard does well:** CocoaBoard delivers a  sales analysis experience across two complementary tabs. The Dashboard tab gives managers an at-a-glance overview with six KPI cards, a clickable map, a ranked leaderboard, and trend/product charts. The AI Chat tab lets users explore the same data with natural language, with charts and a download button for ad-hoc analysis. The map click interaction (Option D) ties the most visual component directly to the filter pipeline, making geographic drill-downs fast and intuitive.
 
-<!-- Trade-offs: one sentence on feedback prioritization - full rationale is in #<issue> and ### Changed above. -->
+**Current limitations:** The dataset is small (~1k rows), so the DuckDB/parquet migration is a structural improvement rather than a noticeable performance gain. The AI Chat tab depends on an external API key and network access, which limits portability. Querychat's SQL engine does not support `LIMIT`, requiring a CTE workaround that the model doesn't always generate correctly on the first try.
 
-<!-- Most useful: which lecture, material, or feedback shaped your work most this milestone,
-     and anything you wish had been covered. -->
+**Intentional deviations from DSCI 531 best practices:** The choropleth uses an orange sequential scale rather than a diverging palette because all revenue values are positive and we want to emphasize magnitude, not deviation from a midpoint.
+
+**Trade-offs:** We prioritized Option D (map click) over QueryChat customization (Option A) because it benefits all users on the primary tab, not just AI tab users. 
+
+**Most useful:** The M3 lecture on reactive architecture and the `page_navbar` debugging experience shaped our approach the most. Understanding that `head_content()` must be passed as a keyword argument, and that Shiny outputs need matching IDs and decorator types, prevented several hours of debugging in M4. We wish there had been more coverage of querychat's SQL limitations (e.g. no `LIMIT`) and how to work around them with system prompts.
 
 ---
 
