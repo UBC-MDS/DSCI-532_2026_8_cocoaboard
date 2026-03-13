@@ -61,6 +61,14 @@ Thanks for your interest in contributing. Here’s how to get set up and submit 
 - **Add features with modularity in mind:** New widgets and panels go in the right module (see [Code and project structure](#code-and-project-structure)); `app.py` stays the single place that wires data and composes panels.
 - **Run the app after changes:** Always run `shiny run src/app.py` (or `--reload`) to confirm the app still works and filters/charts update as expected.
 - **Decisions on record:** Non-trivial process or structure decisions (e.g. default date range, env vars, collaboration norms) are documented in CONTRIBUTING or CHANGELOG and agreed via a PR when possible.
+- **Test after every UI wiring change:** Every new `output_*` in the UI must have a matching server function with the correct decorator (`@render.ui`, `@render.data_frame`, etc.) and the same ID. Missing decorators or ID mismatches produce silent blank outputs that are hard to catch later.
+- **Spec before code:** Update `reports/m2_spec.md` with new components, job stories, and reactivity changes before writing the implementation, so teammates have context during PR review.
+
+### M4 retrospective
+
+- **What worked:** The modular architecture from M3 paid off by adding revenue by product to the AI tab as the helper functions were already isolated in their own modules. Reusing them with `qc_vals.df()` instead of `filtered_data()` required only a few lines in `app.py`. 
+- **What didn't:** Several bugs in M4 came from UI/server wiring mismatches: a missing `@render.ui` decorator on `ai_product_revenue_chart`, an ID mismatch between `ai_leaderboard_chart` (UI) and `ai_leaderboard_table` (server). These produced blank cards with no error messages, which were time-consuming to track down. A quick checklist checking whether every `output_*` ID have a matching decorated server function would have caught all three immediately.
+- **Lesson learned:** When adding outputs to a new tab, copy-paste the full pattern (decorator + function + matching UI ID) rather than writing each piece separately. Also, running the app and checking every card after each change can effectively prevent silent failures from stacking up.
 
 ## Questions
 
