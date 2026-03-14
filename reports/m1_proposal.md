@@ -4,143 +4,70 @@
 
 ### Target Audience
 
-Our target audience will be primarity Sales Managers, Regional Sales
-Directors or C-suites at a chocolate manufacturing/distribution company.
-Our team will serve as Data Analytics Consultants for the sales team
-providing actionable insights to help the leadership team optimize their
-sales strategy and resource allocation.
+Our target audience will be primarity Sales Managers, Regional Sales Directors or C-suites at a chocolate manufacturing/distribution company. Our team will serve as Data Analytics Consultants for the sales team providing actionable insights to help the leadership team optimize their sales strategy and resource allocation.
 
 ### Problem
 
 Here are the challengs facing by the chocolate company:
 
--   Inconsistent sales performance across regions and salespeople: need
-    to build performance tracker for sales strategy and human resource
-    training
--   Inefficient product mix decisions: need to discover the top product
-    sales for efficient recource allocation
--   Reactive rather than proactive management: Monthly or quarterly
-    reviews happen too late to course-correct, and they need real-time
-    visibility into trends
--   Missed opportunities: need to identify seasonal patterns, top
-    customers, or which salesperson-product combinations work best
+-   Inconsistent sales performance across regions and salespeople: need to build performance tracker for sales strategy and human resource training
+-   Inefficient product mix decisions: need to discover the top product sales for efficient recource allocation
+-   Reactive rather than proactive management: Monthly or quarterly reviews happen too late to course-correct, and they need real-time visibility into trends
+-   Missed opportunities: need to identify seasonal patterns, top customers, or which salesperson-product combinations work best
 
 ### Solution
 
-Our interactive R Shiny dashboard will serve as a centralized, web-based
-command center accessible from any browser. Through intuitive dropdown
-filters, date selectors, and dynamic visualizations, sales managers can
-instantly compare performance across salespeople, products, and
-countries without technical expertise.
+Our interactive R Shiny dashboard will serve as a centralized, web-based command center accessible from any browser. Through intuitive dropdown filters, date selectors, and dynamic visualizations, sales managers can instantly compare performance across salespeople, products, and countries without technical expertise.
 
-Interactive charts reveal trends over time, highlight top and
-underperforming segments, and calculate profit margins on-the-fly. Users
-can drill down from high-level overviews to granular transaction
-details, answer ad-hoc questions independently, and even generate
-personalized performance views for individual sales reps. This
-self-service analytics tool transforms static data into actionable
-intelligence, enabling the team to shift from reactive quarterly reviews
-to proactive, data-driven decision-making in real-time.
+Interactive charts reveal trends over time, highlight top and underperforming segments, and calculate profit margins on-the-fly. Users can drill down from high-level overviews to granular transaction details, answer ad-hoc questions independently, and even generate personalized performance views for individual sales reps. This self-service analytics tool transforms static data into actionable intelligence, enabling the team to shift from reactive quarterly reviews to proactive, data-driven decision-making in real-time.
 
 ## Section 2: Description of the Data
 
-**Dataset Source:** [Chocolate Sales | Kaggle](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales)
+**Dataset Source:** [Chocolate Sales \| Kaggle](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales)
 
 ### Stats
 
-The Chocolate Sales dataset contains 6 columns and provides
-transactional-level sales data across multiple dimensions.
+The Chocolate Sales dataset contains 6 columns and provides transactional-level sales data across multiple dimensions.
 
-Columns: - Salesperson - The name of the salesperson responsible for the
-sale. - Country - The country where the sale was made. - Product - The
-name and type of the product sold. - Date - The date when the sale
-transaction occurred (DD/MM/YYYY format). - Amount - The total sales
-amount for the transaction, expressed in US dollars. - Boxes Shipped-
-The number of product boxes shipped as part of the transaction.
+Columns: - Salesperson - The name of the salesperson responsible for the sale. - Country - The country where the sale was made. - Product - The name and type of the product sold. - Date - The date when the sale transaction occurred (DD/MM/YYYY format). - Amount - The total sales amount for the transaction, expressed in US dollars. - Boxes Shipped- The number of product boxes shipped as part of the transaction.
 
 ### Relevance
 
-Performance Tracking Variables: Salesperson - Enables comparison of
-individual sales person performance, identifying top performers and
-those needing additional support or training Amount - Provides direct
-revenue to measure sales success and a source to set benchmarks across
-regions
+Performance Tracking Variables: Salesperson - Enables comparison of individual sales person performance, identifying top performers and those needing additional support or training Amount - Provides direct revenue to measure sales success and a source to set benchmarks across regions
 
-Product Analysis: Product - Links performance to specific chocolate
-types, revealing which items is the main sales driver and which may need
-promotional support or discontinuation
+Product Analysis: Product - Links performance to specific chocolate types, revealing which items is the main sales driver and which may need promotional support or discontinuation
 
-Geographic Intelligence: Country - Reveals regional performance
-disparities, will provide insighta for resource allocation based on
-high-potential markets and identify underperforming territories that
-need attention
+Geographic Intelligence: Country - Reveals regional performance disparities, will provide insighta for resource allocation based on high-potential markets and identify underperforming territories that need attention
 
-Temporal Insights: Date - Enables trend analysis to detect seasonality
-and growth patterns, which is essential for weekly, monthly, quarterly
-or annual sales strategy. The nature of the DD/MM/YYYY format allows for
-aggregation by day, month, quarter, or year.
+Temporal Insights: Date - Enables trend analysis to detect seasonality and growth patterns, which is essential for weekly, monthly, quarterly or annual sales strategy. The nature of the DD/MM/YYYY format allows for aggregation by day, month, quarter, or year.
 
 ## Section 3: Research Questions & Usage Scenarios
 
 ### Usage Scenario
 
-Vinay is a Regional Sales Director at a chocolate company and he wants
-to understand what drives sales performance across regions, products,
-and his team in order to allocate resources and set targets. He wants to
-be able to [explore] transactional sales data in order to [compare]
-performance by country, product, and sales person and [identify] top
-performers, seasonal trends, and underperforming areas.
+Vinay is a Regional Sales Director at a chocolate company and he wants to understand what drives sales performance across regions, products, and his team in order to allocate resources and set targets. He wants to be able to [explore] transactional sales data in order to [compare] performance by country, product, and sales person and [identify] top performers, seasonal trends, and underperforming areas.
 
-When Vinay logs on to our CocoaBoard app, he will see an overview of key
-metrics—total sales (\~\$19.79M in the dataset), year-over-year growth
-(+54.3%), and breakdowns by Country, Product, and Sales Person. He can
-filter by date range, country, or product to compare regions and
-individuals, and explore which products and salespeople drive the most
-revenue. When he does so, Vinay may e.g. notice that Australia is the
-top-performing country and Mallorie Waber is the top sales person, and
-that premium dark chocolate variants such as "50% Dark Bites" lead in
-sales.
+When Vinay logs on to our CocoaBoard app, he will see an overview of key metrics—total sales (\~\$19.79M in the dataset), year-over-year growth (+54.3%), and breakdowns by Country, Product, and Sales Person. He can filter by date range, country, or product to compare regions and individuals, and explore which products and salespeople drive the most revenue. When he does so, Vinay may e.g. notice that Australia is the top-performing country and Mallorie Waber is the top sales person, and that premium dark chocolate variants such as "50% Dark Bites" lead in sales.
 
-Based on his findings from using our app, Vinay can set regional
-targets, reward top performers, rebalance product mix in weaker regions,
-and plan seasonal campaigns using the same dashboard for ongoing
-monitoring.
+Based on his findings from using our app, Vinay can set regional targets, reward top performers, rebalance product mix in weaker regions, and plan seasonal campaigns using the same dashboard for ongoing monitoring.
 
 ### User Stories
 
-**User Story 1:** As a **Sales Manager**, I want to **filter sales by
-country and date range** in order to **compare regional performance and
-spot trends over time**.
+**User Story 1:** As a **Sales Manager**, I want to **filter sales by country and date range** in order to **compare regional performance and spot trends over time**.
 
-**User Story 2:** As a **Regional Sales Director**, I want to **compare
-revenue and boxes shipped by product (e.g., 50% Dark Bites, Smooth Silky
-Caramel)** in order to **identify best-selling products and adjust
-inventory or promotions**.
+**User Story 2:** As a **Regional Sales Director**, I want to **compare revenue and boxes shipped by product (e.g., 50% Dark Bites, Smooth Silky Caramel)** in order to **identify best-selling products and adjust inventory or promotions**.
 
-**User Story 3:** As a **Sales Manager**, I want to **see rankings of
-sales people by total sales and by country** in order to **evaluate
-individual contribution and allocate territories or incentives**.
+**User Story 3:** As a **Sales Manager**, I want to **see rankings of sales people by total sales and by country** in order to **evaluate individual contribution and allocate territories or incentives**.
 
-**User Story 4:** As a **C-suite executive**, I want to **view
-high-level sales trends and YoY growth** in order to **track company
-performance and support strategic decisions**.
+**User Story 4:** As a **C-suite executive**, I want to **view high-level sales trends and YoY growth** in order to **track company performance and support strategic decisions**.
 
 ### Jobs to Be Done
 
-**JTBD 1:** **Situation:** When I am reviewing monthly or quarterly
-sales reports... **Motivation:** ...I want to see total sales, growth,
-and breakdowns by country and product... **Outcome:** ...so I can align
-targets and resource allocation with actual performance.
+**JTBD 1:** **Situation:** When I am reviewing monthly or quarterly sales reports... **Motivation:** ...I want to see total sales, growth, and breakdowns by country and product... **Outcome:** ...so I can align targets and resource allocation with actual performance.
 
-**JTBD 2:** **Situation:** When evaluating my sales team...
-**Motivation:** ...I want to compare sales people by revenue and boxes
-shipped, and by region... **Outcome:** ...so I can recognize top
-performers and support those in underperforming regions.
+**JTBD 2:** **Situation:** When evaluating my sales team... **Motivation:** ...I want to compare sales people by revenue and boxes shipped, and by region... **Outcome:** ...so I can recognize top performers and support those in underperforming regions.
 
-**JTBD 3:** **Situation:** When planning product mix and promotions...
-**Motivation:** ...I want to see which products sell best in which
-countries and over time... **Outcome:** ...so I can prioritize premium
-lines (e.g., dark chocolate) and seasonal campaigns.
+**JTBD 3:** **Situation:** When planning product mix and promotions... **Motivation:** ...I want to see which products sell best in which countries and over time... **Outcome:** ...so I can prioritize premium lines (e.g., dark chocolate) and seasonal campaigns.
 
 ## Section 4: Exploratory Data Analysis
 
@@ -160,17 +87,24 @@ As we can see, the top 3 products are "Smooth Sliky Salty", "50% Dark Bites" and
 
 The plot reveals that there's a positive correlation between both variables. This suggests that products with higher sales revenue also tend to have a higher volume of boxes shipped, which makes sense, they have more demmand.
 
-
-
 ### How This Supports Decision-Making
 
 This comparison helps the director make informed decisions about inventory allocation, promotional strategies, and potential product discontinuation. For instance, products with high revenue and high boxes shipped are strong performers that might warrant increased inventory and continued promotional support. Conversely, products with low revenue but high boxes shipped could indicate pricing issues or low-profit margins, prompting a review of their pricing strategy or even discontinuation.
 
-
 ## Section 5: App Sketch & Description
 
-![Dashboard sketch](../img/sketch.png)
+![Dashboard sketch](/img/updated_sketch.png)
 
-The dashboard features a comprehensive landing page displaying key sales metrics and visualizations for chocolate sales analysis. At the top, an interactive filters panel allows users to filter data by date range, country, and product through dropdown menus. Below the filters, there are 3 KPI cards displaying the Total Revenue, Total Boxes Shipped, and Active Sales Representatives within the date range, each showing year-over-year percentage changes for comparison. 
+The dashboard uses a **sidebar + main content layout** with a navbar showing the app title and a one-line description of its purpose.
 
-The main visualization is a line chart "Revenue Over Time" tracking sales trends within a date range, accompanied by two ranking tables: "Top 5 Products" showing product performance by revenue and number of transactions, and "Top 5 Countries" displaying geographic sales leaders by revenue. At the bottom, a detailed "Salesperson Performance Leaderboard" table presents individual sales representative metrics including rank, name, total revenue, and number of transactions, enabling users to compare team performance at a glance and identify top performers across multiple dimensions. The performance leader board is interactive as the user is able to filter by sales rep by clicking the name of the sales rep in the table.
+**Left sidebar (Filters):** Year radio buttons, date range picker, multi-select country and product dropdowns (empty = all), plus Clear Selections and Reset Filters buttons. All filters share a single `filtered_data` reactive calc that drives every output on the page.
+
+**KPI row (top):** Six value boxes arranged in a 2×3 grid — Total Revenue, Average Revenue, YoY Revenue %, MoM Revenue %, Top Product Revenue Share, and Top Country Revenue Share. YoY and MoM ignore the date filter so they always compare full time periods.
+
+**Charts (middle):** Revenue by Product horizontal bar chart (right) alongside a clickable choropleth world map (left). Clicking a country on the map toggles it in the Country filter, and all outputs update immediately. Selected countries are highlighted in orange; unselected countries dim to grey.
+
+**Revenue Trend (middle-right):** A multi-line chart showing monthly revenue for the top 5 sales reps, enabling trend and seasonality analysis.
+
+**Leaderboard (bottom):** A ranked table of sales reps with Revenue, Transactions, Boxes Shipped, Avg Deal Size, and Revenue Share %, plus an AVERAGE / TOTAL summary row.
+
+The user workflow flows top-down: set filters → scan KPIs → explore charts → drill into the leaderboard. The map click interaction provides a shortcut that lets users skip the sidebar entirely for geographic drill-downs.

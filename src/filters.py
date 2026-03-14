@@ -1,37 +1,75 @@
-"""Filter card widget: date range, country, product."""
+"""Filter widget: date range, country, product. Card layout or sidebar content."""
 
 from shiny import ui
 
 
-def filters_ui(countries: list[str], products: list[str], date_min: str, date_max: str):
-    """Build the filters card UI with filters arranged in a row."""
+def _filter_inputs(
+    countries: list[str],
+    products: list[str],
+    date_min: str,
+    date_max: str,
+    date_default_start: str,
+    years: list[int],
+):
+    """Shared filter inputs (date, country, product). Used by both card and sidebar."""
+    default_year = str(max(years)) if years else "All"
+    return [
+        ui.tags.div(
+            ui.input_radio_buttons(
+                "year",
+                "Year",
+                choices=["All"] + [str(y) for y in years],
+                selected=default_year,
+                inline=True,
+            ),
+            class_="year-buttons",
+        ),
+        ui.input_date_range(
+            "date_range",
+            "Date Range",
+            start=date_default_start,
+            end=date_max,
+            min=date_min,
+            max=date_max,
+        ),
+        ui.input_selectize(
+            "country",
+            "Country",
+            choices=countries,
+            selected=None,
+            multiple=True,
+            options={"placeholder": "All countries"},
+        ),
+        ui.input_selectize(
+            "product",
+            "Product",
+            choices=products,
+            selected=None,
+            multiple=True,
+            options={"placeholder": "All products"},
+        ),
+    ]
+
+
+def filters_ui(
+    countries: list[str],
+    products: list[str],
+    date_min: str,
+    date_max: str,
+    years: list[int],
+    date_default_start: str | None = None,
+):
+    """Build the filters card UI with filters arranged in a row (legacy/inline use)."""
+    if date_default_start is None:
+        date_default_start = date_min
     return ui.layout_columns(
         ui.card(
             ui.card_header("Filters"),
             ui.layout_columns(
-                ui.input_date_range(
-                    "date_range",
-                    "Date Range",
-                    start=date_min,
-                    end=date_max,
+                *_filter_inputs(
+                    countries, products, date_min, date_max, date_default_start, years
                 ),
-                ui.input_selectize(
-                    "country",
-                    "Country",
-                    choices=countries,       
-                    selected=None,        
-                    multiple=True,           
-                    options={"placeholder": "All countries"},
-                ),
-                ui.input_selectize(
-                    "product",
-                    "Product",
-                    choices=products,         
-                    selected=None,           
-                    multiple=True,
-                    options={"placeholder": "All products"},
-                ),
-                col_widths=(4, 4, 4),
+                col_widths=(12, 4, 4, 4),
                 fill=False,
                 fillable=False,
             ),
@@ -39,4 +77,36 @@ def filters_ui(countries: list[str], products: list[str], date_min: str, date_ma
         col_widths=(12,),
         fill=False,
         fillable=False,
+    )
+
+
+def filters_sidebar_ui(
+    countries: list[str],
+    products: list[str],
+    date_min: str,
+    date_max: str,
+    years: list[int],
+    date_default_start: str | None = None,
+):
+    """Build filter inputs for use inside a collapsible sidebar (stacked vertically)."""
+    if date_default_start is None:
+        date_default_start = date_min
+    return ui.tags.div(
+        *_filter_inputs(
+            countries, products, date_min, date_max, date_default_start, years
+        ),
+        ui.tags.div(
+            ui.input_action_button(
+                "clear_selections",
+                "Clear selections",
+                class_="btn-outline-secondary w-100",
+            ),
+            ui.input_action_button(
+                "reset_filters",
+                "Reset filters",
+                class_="btn-secondary w-100",
+            ),
+            style="display: flex; flex-direction: column; gap: 0.5rem;",
+        ),
+        style="display: flex; flex-direction: column; gap: 1rem;",
     )
